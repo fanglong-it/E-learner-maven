@@ -10,6 +10,22 @@
 <html>
     <head>
         <title>Group Chat</title>
+        <style>
+            .button-as-p {
+                display: inline-block;
+                background-color: transparent;
+                border: none;
+                padding: 0;
+                margin: 0;
+                cursor: pointer;
+                color: #0dcaf0;
+            }
+
+            .button-as-p:hover {
+                text-decoration: underline;
+            }
+
+        </style>
     </head>
     <jsp:include page="components/header.jsp"></jsp:include>
         <body id="page-top">
@@ -30,7 +46,7 @@
                             <div class="row">
                                 <div class="col-sm-2 mb-3 mt-3">
                                     <div class="row">
-                                    <c:forEach var="c" items="${requestScope.groupChats}" varStatus="counter">     
+                                    <c:forEach var="c" items="${requestScope.groupChats}" varStatus="counter">
                                         <div class="form-group mt-3 mb-3 border bg-light">
                                             <div class="row">
                                                 <div class="col-sm-8">
@@ -96,9 +112,16 @@
                                                                 <c:if test="${message.account.id eq sessionScope.account.id}">
                                                                     <img class="avatar me-2" width="50px" height="50px" src="images/${message.account.avatar}" alt="Avatar">
                                                                 </c:if>
+
                                                                 <div class="message-content rounded p-2 d-inline-block">
                                                                     <b class="font-weight-bold">${message.account.fullname}</b>
                                                                     <div class="form-group bg-light rounded-1">
+                                                                        <c:if test="${message.resourcePathFile != null and message.resourcePathFile != ''}">
+                                                                            <form method="post" action="download-file">
+                                                                                <input type="hidden" name="pathUrl" value="${requestScope.path}/${message.resourcePathFile}">
+                                                                                <button class="button-as-p">${message.resourcePathFile}</button>
+                                                                            </form>
+                                                                        </c:if>
                                                                         <p class="mb-0">${message.content}</p>
                                                                         <small class="text-muted">${message.dateSended}</small>
                                                                     </div>
@@ -111,11 +134,21 @@
                                                     </div>
                                                 </div>
                                                 <div class="row mt-3">
-                                                    <form method="post" action="chat-content">
+<%--                                                    <form method="post" action="chat-content">--%>
+<%--                                                        <div class="input-group">--%>
+<%--                                                            <input type="hidden" name="rows" value="${requestScope.rows}">--%>
+<%--                                                            <input type="hidden" name="groupChatId" value="${requestScope.groupChatId}">--%>
+<%--                                                            <input type="text" name="messageContent" class="form-control" placeholder="Type your message" required>--%>
+<%--                                                            <button type="submit" class="btn btn-primary">Send</button>--%>
+<%--                                                        </div>--%>
+<%--                                                    </form>--%>
+                                                    <form method="post" action="chat-content" enctype="multipart/form-data">
                                                         <div class="input-group">
                                                             <input type="hidden" name="rows" value="${requestScope.rows}">
                                                             <input type="hidden" name="groupChatId" value="${requestScope.groupChatId}">
-                                                            <input type="text" name="messageContent" class="form-control" placeholder="Type your message" required>
+                                                            <input type="file" name="file" class="form-control-file">
+                                                            <input type="text" name="messageContent" class="form-control"
+                                                                   placeholder="Type your message" required>
                                                             <button type="submit" class="btn btn-primary">Send</button>
                                                         </div>
                                                     </form>
