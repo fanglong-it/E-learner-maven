@@ -127,10 +127,6 @@ public class ContentGroupChat extends HttpServlet {
                     String allowMess = Util.censorBadWords(mess.getContent(), badwordContent);
                     mess.setContent(allowMess);
                 }
-                for (Message mess : messages
-                ) {
-                    System.out.println(mess.getContent());
-                }
 
                 request.setAttribute("path", Constant.rootPath + "webapp/files");
                 request.setAttribute("messages", messages);
@@ -175,7 +171,7 @@ public class ContentGroupChat extends HttpServlet {
             if (account != null) {
                 // Create a factory for disk-based file items
                 DiskFileItemFactory factory = new DiskFileItemFactory();
-
+                factory.setDefaultCharset("UTF-8");
                 // Create a new file upload handler
                 ServletFileUpload upload = new ServletFileUpload(factory);
 
@@ -187,19 +183,22 @@ public class ContentGroupChat extends HttpServlet {
                     if (!item.isFormField()) {
                         // Handle the uploaded file
                         String fileName = item.getName();
-                        fileNameDir =fileName;
-                        System.out.println("fileName: " + fileName);
+                        if(fileName.length() > 0){
+                            fileNameDir = fileName;
+                            System.out.println("fileName: " + fileName);
 
-                        String absolutePath = Constant.rootPath + "webapp/files/" + fileName;
-                        System.out.println(absolutePath);
+                            String absolutePath = Constant.rootPath + "webapp/files/" + fileName;
+                            System.out.println(absolutePath);
 
-                        File file = new File(absolutePath);
-                        item.write(file);
+                            File file = new File(absolutePath);
+                            item.write(file);
+                        }
 
                     } else {
                         // Handle other form fields
                         String fieldName = item.getFieldName();
                         String fieldValue = item.getString();
+                        System.out.println("fieldValue: " + fieldValue);
                         // Process the form field values
                         if("groupChatId".equals(fieldName)){
                             groupId = fieldValue;
