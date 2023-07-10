@@ -8,14 +8,19 @@ import fu.swp.dao.AccountDAO;
 import fu.swp.dao.GroupChatDAO;
 import fu.swp.dao.MemberDAO;
 import fu.swp.dao.MessageDAO;
+import fu.swp.dto.BadWord;
 import fu.swp.model.Account;
 import fu.swp.model.GroupChat;
 import fu.swp.model.Message;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
+import fu.swp.utils.Constant;
+import fu.swp.utils.Util;
+import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.disk.DiskFileItemFactory;
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
+
+import java.io.*;
+import java.util.*;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -24,25 +29,25 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 /**
- *
  * @author DW
  */
 @WebServlet(name = "ContentGroupChat", urlPatterns = {"/chat-content"})
 public class ContentGroupChat extends HttpServlet {
 
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
      *
-     * @param request servlet request
+     * @param request  servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
+     * @throws IOException      if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try ( PrintWriter out = response.getWriter()) {
+        try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
             out.println("<!DOCTYPE html>");
             out.println("<html>");
@@ -57,13 +62,14 @@ public class ContentGroupChat extends HttpServlet {
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+
     /**
      * Handles the HTTP <code>GET</code> method.
      *
-     * @param request servlet request
+     * @param request  servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
+     * @throws IOException      if an I/O error occurs
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -72,6 +78,7 @@ public class ContentGroupChat extends HttpServlet {
         GroupChatDAO groupChatDAO = new GroupChatDAO();
         MessageDAO messageDAO = new MessageDAO();
         try {
+
             HttpSession session = request.getSession();
             Account account = (Account) session.getAttribute("account");
             String groupChatId = request.getParameter("groupChatId") == null ? "" : request.getParameter("groupChatId");
@@ -90,6 +97,38 @@ public class ContentGroupChat extends HttpServlet {
                 List<Message> messages = messageDAO.getAllMessageFromGroupId(Integer.parseInt(groupChatId), Integer.parseInt(rows));
                 Collections.reverse(messages);
 
+                // get list bad word
+                String filePath = Constant.rootPath + "resources/badword.txt";  // Specify the path to your text file
+
+                // get list badwords
+                List<BadWord> badWordList = new ArrayList<>();
+
+                try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+                    String line;
+                    while ((line = br.readLine()) != null) {
+                        BadWord badWord = Util.mapLineToBadWord(line);
+                        if (badWord != null) {
+                            badWordList.add(badWord);
+                        }
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                List<String> badwordContent = new ArrayList<>();
+                for (BadWord b: badWordList
+                     ) {
+                    badwordContent.add(b.getBadWord());
+                }
+
+
+                for (Message mess : messages
+                ) {
+                    String allowMess = Util.censorBadWords(mess.getContent(), badwordContent);
+                    mess.setContent(allowMess);
+                }
+
+                request.setAttribute("path", Constant.rootPath + "webapp/files");
                 request.setAttribute("messages", messages);
                 request.setAttribute("groupChatId", groupChatId);
                 request.setAttribute("rows", rows);
@@ -108,26 +147,70 @@ public class ContentGroupChat extends HttpServlet {
     /**
      * Handles the HTTP <code>POST</code> method.
      *
-     * @param request servlet request
+     * @param request  servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
+     * @throws IOException      if an I/O error occurs
      */
+
+
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String url = "Login.jsp";
+
         MessageDAO messageDAO = new MessageDAO();
 
         try {
             HttpSession session = request.getSession();
             Account account = (Account) session.getAttribute("account");
+            String groupId = "";
+            String rows = "";
+            String message = "";
+            String fileNameDir="";
             if (account != null) {
-                String groupChatId = request.getParameter("groupChatId");
-                String rows = request.getParameter("rows");
-                String messageContent = request.getParameter("messageContent");
-                Message message = messageDAO.sendMessage(new Message(0, messageContent, "", account, Integer.parseInt(groupChatId), new Date(System.currentTimeMillis())));
-                url = "chat-content?groupChatId=" + groupChatId + "&rows=" + rows;
+                // Create a factory for disk-based file items
+                DiskFileItemFactory factory = new DiskFileItemFactory();
+                factory.setDefaultCharset("UTF-8");
+                // Create a new file upload handler
+                ServletFileUpload upload = new ServletFileUpload(factory);
+
+                // Parse the request to get file items
+                List<FileItem> items = upload.parseRequest(request);
+
+                // Process each file item
+                for (FileItem item : items) {
+                    if (!item.isFormField()) {
+                        // Handle the uploaded file
+                        String fileName = item.getName();
+                        if(fileName.length() > 0){
+                            fileNameDir = fileName;
+                            System.out.println("fileName: " + fileName);
+
+                            String absolutePath = Constant.rootPath + "webapp/files/" + fileName;
+                            System.out.println(absolutePath);
+
+                            File file = new File(absolutePath);
+                            item.write(file);
+                        }
+
+                    } else {
+                        // Handle other form fields
+                        String fieldName = item.getFieldName();
+                        String fieldValue = item.getString();
+                        System.out.println("fieldValue: " + fieldValue);
+                        // Process the form field values
+                        if("groupChatId".equals(fieldName)){
+                            groupId = fieldValue;
+                        }else if("rows".equals(fieldName)){
+                            rows = fieldValue;
+                        }else if("messageContent".equals(fieldName)){
+                            message = fieldValue;
+                        }
+                    }
+                }
+                Message messageInsert = messageDAO.sendMessage(new Message(0, message, fileNameDir, account, Integer.parseInt(groupId), new Date(System.currentTimeMillis())));
+                url = "chat-content?groupChatId=" + groupId + "&rows=" + rows;
             } else {
                 url = "Login.jsp";
             }

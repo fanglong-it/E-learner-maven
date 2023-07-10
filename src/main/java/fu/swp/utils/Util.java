@@ -4,6 +4,9 @@
  */
 package fu.swp.utils;
 
+import fu.swp.dto.BadWord;
+
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -27,6 +30,41 @@ public class Util {
         Pattern pattern = Pattern.compile(PHONE_PATTERN);
         Matcher matcher = pattern.matcher(phoneNumber);
         return matcher.matches();
+    }
+
+    public static String censorBadWords(String message, List<String> badWords) {
+        String[] words = message.split("\\s+");
+        StringBuilder censoredMessage = new StringBuilder();
+
+        for (String word : words) {
+            if (badWords.contains(word.toLowerCase())) {
+                censoredMessage.append("***");
+            } else {
+                censoredMessage.append(word);
+            }
+            censoredMessage.append(" ");
+        }
+
+        return censoredMessage.toString().trim();
+    }
+
+    public static BadWord mapLineToBadWord(String line) {
+        String[] parts = line.split(",");
+        if (parts.length != 2) {
+            return null; // Skip the line if it doesn't have the expected format
+        }
+
+        int id;
+        String name;
+
+        try {
+            id = Integer.parseInt(parts[0].substring(parts[0].indexOf('=') + 1).trim());
+            name = parts[1].substring(parts[1].indexOf('=') + 1).trim();
+        } catch (NumberFormatException e) {
+            return null; // Skip the line if the ID is not a valid integer
+        }
+
+        return new BadWord(id, name);
     }
 
 }

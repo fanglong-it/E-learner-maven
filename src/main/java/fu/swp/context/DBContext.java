@@ -10,9 +10,9 @@ import java.sql.DriverManager;
 
 public class DBContext {
 
-//    Connection con = null;
+    // Connection con = null;
 
-     public static Connection makeConnection() throws Exception {
+    public static Connection makeConnection() throws Exception {
         Connection cn = null;
         String IP = "localhost";
         String instanceName = "";
@@ -22,7 +22,8 @@ public class DBContext {
         String db = "e-learner";
         String driver = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
         String url = "jdbc:sqlserver://" + IP + "\\" + instanceName + ":" + port
-                + ";databasename=" + db + ";user=" + uid + ";password=" + pwd + ";encrypt=true;trustServerCertificate=true";
+                + ";databasename=" + db + ";user=" + uid + ";password=" + pwd
+                + ";encrypt=true;trustServerCertificate=true";
         Class.forName(driver);
         cn = DriverManager.getConnection(url);
         return cn;
