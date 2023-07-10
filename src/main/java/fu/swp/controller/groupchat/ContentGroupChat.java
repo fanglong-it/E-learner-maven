@@ -8,6 +8,7 @@ import fu.swp.dao.AccountDAO;
 import fu.swp.dao.GroupChatDAO;
 import fu.swp.dao.MemberDAO;
 import fu.swp.dao.MessageDAO;
+import fu.swp.dto.BadWord;
 import fu.swp.model.Account;
 import fu.swp.model.GroupChat;
 import fu.swp.model.Message;
@@ -99,23 +100,38 @@ public class ContentGroupChat extends HttpServlet {
                 // get list bad word
                 String filePath = Constant.rootPath + "resources/badword.txt";  // Specify the path to your text file
 
-                List<String> badWords = new ArrayList<>();
+                // get list badwords
+                List<BadWord> badWordList = new ArrayList<>();
 
                 try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
                     String line;
                     while ((line = br.readLine()) != null) {
-                        badWords.add(line);
+                        BadWord badWord = Util.mapLineToBadWord(line);
+                        if (badWord != null) {
+                            badWordList.add(badWord);
+                        }
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
 
+                List<String> badwordContent = new ArrayList<>();
+                for (BadWord b: badWordList
+                     ) {
+                    badwordContent.add(b.getBadWord());
+                }
+
 
                 for (Message mess : messages
                 ) {
-                    String allowMess = Util.censorBadWords(mess.getContent(), badWords);
+                    String allowMess = Util.censorBadWords(mess.getContent(), badwordContent);
                     mess.setContent(allowMess);
                 }
+                for (Message mess : messages
+                ) {
+                    System.out.println(mess.getContent());
+                }
+
                 request.setAttribute("path", Constant.rootPath + "webapp/files");
                 request.setAttribute("messages", messages);
                 request.setAttribute("groupChatId", groupChatId);
