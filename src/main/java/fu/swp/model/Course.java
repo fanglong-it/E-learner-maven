@@ -5,6 +5,7 @@
 package fu.swp.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import lombok.AllArgsConstructor;
@@ -19,7 +20,6 @@ import lombok.Setter;
  */
 @Builder
 @AllArgsConstructor
-@NoArgsConstructor
 @Getter
 @Setter
 public class Course implements Serializable {
@@ -32,4 +32,10 @@ public class Course implements Serializable {
     private Date createDate;
     private Account account;
     private List<Account> teachers;
+
+    public Course() {
+        status = 1;
+        teachers = new ArrayList<>();
+        createDate = new Date();
+    }
 }

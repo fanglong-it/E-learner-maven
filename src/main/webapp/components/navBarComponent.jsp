@@ -16,12 +16,21 @@
             <a href="list-course?courseName=" class="nav-item nav-link">Courses</a>
             <c:choose>
                 <c:when test="${sessionScope.account != null}">
-                    <c:if test="${sessionScope.account.role.role_name != 'STUDENT'}">
+                    <c:if test="${sessionScope.account.role.role_name == 'ADMIN'}">
                         <div class="nav-item dropdown">
                             <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Manager</a>
                             <div class="dropdown-menu fade-down m-0">
-                                <a href="manager-course" class="dropdown-item">MANAGE COURSE</a>
-                                <a href="manager-class" class="dropdown-item">MANAGE CLASS</a>
+                                <a href="admin/courses" class="dropdown-item">MANAGE COURSE</a>
+                                <a href="admin/classes" class="dropdown-item">MANAGE CLASS</a>
+                            </div>
+                        </div>
+                    </c:if>
+
+                    <c:if test="${sessionScope.account.role.role_name == 'TEACHER'}">
+                        <div class="nav-item dropdown">
+                            <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Manager</a>
+                            <div class="dropdown-menu fade-down m-0">
+                                <a href="teacher/classes" class="dropdown-item">MANAGE CLASS</a>
                             </div>
                         </div>
                     </c:if>
@@ -68,9 +77,9 @@
                                 <img width="50px" height="50px" src="images/${sessionScope.account.avatar}" alt="alt"/>
                             </button>
                             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                <li><a class="dropdown-item" href="profile">Information</a></li>
-                                <li><a class="dropdown-item" href="request-history">History</a></li>
-                                <li><a class="dropdown-item bg-danger" href="Logout">Logout</a></li>
+                                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/profile">Information</a></li>
+                                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/request-history">History</a></li>
+                                <li><a class="dropdown-item bg-danger" href="${pageContext.request.contextPath}/Logout">Logout</a></li>
                             </ul>
                         </div>
 
@@ -81,7 +90,9 @@
                 </c:choose>  
             </div>
         </div>
+    </div>
 </nav>
+
 <!-- Navbar End -->
 
 

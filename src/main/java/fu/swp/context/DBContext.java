@@ -18,7 +18,7 @@ public class DBContext {
         String instanceName = "";
         String port = "1433";
         String uid = "sa";
-        String pwd = "passwordforsa123";
+        String pwd = "Aqswde123@";
         String db = "e-learner";
         String driver = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
         String url = "jdbc:sqlserver://" + IP + "\\" + instanceName + ":" + port

@@ -434,3 +434,6 @@
     padding-right: 0;
     border-right: none;
 }
+.content {
+    width: 100% !important;
+}

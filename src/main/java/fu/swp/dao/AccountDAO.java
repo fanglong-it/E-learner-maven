@@ -62,7 +62,7 @@ public class AccountDAO implements Serializable {
         return null;
     }
 
-    public Account getAccountById(int id) throws SQLException, Exception {
+    public Account getAccountById(int id) throws Exception {
         String query = "SELECT * From Account a left outer join [Role] r on a.roleId  = r.roleId "
                 + " WHERE a.id = ? and a.status = '1'";
         try {
