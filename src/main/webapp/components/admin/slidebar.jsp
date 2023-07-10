@@ -8,6 +8,7 @@
             <a href="AdminController" class="nav-item nav-link "><i class="fas fa-chart-line me-2"></i>Dashboard</a>
             <a href="manager-course" class="nav-item nav-link"><i class="fab fa-product-hunt me-2"></i>Course</a>
             <a href="manager-account" class="nav-item nav-link"><i class="fas fa-newspaper me-2"></i>Account</a>
+            <a href="manager-bad-word" class="nav-item nav-link"><i class="fa-regular fa-text-slash me-2"></i>Manage Bad Words</a>
             <div class="nav-item dropdown">
                 <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="far fa-file-alt me-2"></i>Pages</a>
                 <div class="dropdown-menu bg-transparent border-0">

@@ -11,15 +11,14 @@ import fu.swp.dao.MessageDAO;
 import fu.swp.model.Account;
 import fu.swp.model.GroupChat;
 import fu.swp.model.Message;
+import fu.swp.utils.Constant;
+import fu.swp.utils.Util;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
 import java.io.*;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
-import java.util.Properties;
+import java.util.*;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -33,7 +32,7 @@ import javax.servlet.http.HttpSession;
  */
 @WebServlet(name = "ContentGroupChat", urlPatterns = {"/chat-content"})
 public class ContentGroupChat extends HttpServlet {
-    String rootPath = "C:/Personal/E-learning/E-learner-maven/src/main/webapp/files";
+
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -97,7 +96,27 @@ public class ContentGroupChat extends HttpServlet {
                 List<Message> messages = messageDAO.getAllMessageFromGroupId(Integer.parseInt(groupChatId), Integer.parseInt(rows));
                 Collections.reverse(messages);
 
-                request.setAttribute("path", rootPath);
+                // get list bad word
+                String filePath = Constant.rootPath + "resources/badword.txt";  // Specify the path to your text file
+
+                List<String> badWords = new ArrayList<>();
+
+                try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+                    String line;
+                    while ((line = br.readLine()) != null) {
+                        badWords.add(line);
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+
+                for (Message mess : messages
+                ) {
+                    String allowMess = Util.censorBadWords(mess.getContent(), badWords);
+                    mess.setContent(allowMess);
+                }
+                request.setAttribute("path", Constant.rootPath + "webapp/files");
                 request.setAttribute("messages", messages);
                 request.setAttribute("groupChatId", groupChatId);
                 request.setAttribute("rows", rows);
@@ -155,7 +174,7 @@ public class ContentGroupChat extends HttpServlet {
                         fileNameDir =fileName;
                         System.out.println("fileName: " + fileName);
 
-                        String absolutePath = rootPath + "/" + fileName;
+                        String absolutePath = Constant.rootPath + "webapp/files/" + fileName;
                         System.out.println(absolutePath);
 
                         File file = new File(absolutePath);

@@ -134,14 +134,6 @@
                                                     </div>
                                                 </div>
                                                 <div class="row mt-3">
-<%--                                                    <form method="post" action="chat-content">--%>
-<%--                                                        <div class="input-group">--%>
-<%--                                                            <input type="hidden" name="rows" value="${requestScope.rows}">--%>
-<%--                                                            <input type="hidden" name="groupChatId" value="${requestScope.groupChatId}">--%>
-<%--                                                            <input type="text" name="messageContent" class="form-control" placeholder="Type your message" required>--%>
-<%--                                                            <button type="submit" class="btn btn-primary">Send</button>--%>
-<%--                                                        </div>--%>
-<%--                                                    </form>--%>
                                                     <form method="post" action="chat-content" enctype="multipart/form-data">
                                                         <div class="input-group">
                                                             <input type="hidden" name="rows" value="${requestScope.rows}">
