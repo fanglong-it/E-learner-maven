@@ -82,7 +82,7 @@ public class ManagerClass extends HttpServlet {
                     request.setAttribute("classes", classDAO.getClassByCourseId(Integer.parseInt(courseId)));
                     request.setAttribute("accounts", accountDAO.getListAccountsTeacher());
                     request.setAttribute("course", courseDAO.getCourseById(Integer.parseInt(courseId)));
-                    url = "manager-classes-admin.jsp";
+                    url = "/admin/courses.jsp";
                 }
             } else {
                 url = "Login.jsp";
@@ -105,7 +105,12 @@ public class ManagerClass extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        HttpSession session = request.getSession();
+
+        session.setAttribute("message", "Update class successfully!");
+
+        String courseId = request.getParameter("courseId") == null ? "" : request.getParameter("courseId");
+        response.sendRedirect("manager-class?course=" + courseId);
     }
 
     /**

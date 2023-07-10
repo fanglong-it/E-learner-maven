@@ -261,4 +261,62 @@ public class CourseDAO {
         return null;
     }
 
+    public boolean updateCourse(Course course) throws Exception {
+        String query = "UPDATE Course " +
+                "SET courseName=?," +
+                "   image=?, " +
+                "   status=?, " +
+                "   description=? " +
+                "WHERE id = ?";
+        try {
+            con = DBContext.makeConnection();
+            if (con != null) {
+                ps = con.prepareStatement(query);
+                ps.setString(1, course.getCourseName());
+                ps.setString(2, course.getImage());
+                ps.setInt(3, course.getStatus());
+                ps.setString(4, course.getDescription());
+                ps.setInt(5, course.getId());
+                if (ps.executeUpdate() > 0) {
+                    return true;
+                }
+            }
+        } finally {
+            if (rs != null) {
+                rs.close();
+            }
+            if (ps != null) {
+                ps.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+        return false;
+    }
+
+    public boolean deleteCourse(int courseId) throws Exception {
+        String query = "delete from Course where id=?";
+        try {
+            con = DBContext.makeConnection();
+            if (con != null) {
+                ps = con.prepareStatement(query);
+                ps.setInt(1, courseId);
+                if (ps.executeUpdate() > 0) {
+                    return true;
+                }
+            }
+        } finally {
+            if (rs != null) {
+                rs.close();
+            }
+            if (ps != null) {
+                ps.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+        return false;
+    }
 }
