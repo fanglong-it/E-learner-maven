@@ -24,4 +24,5 @@ public class Member {
     private int id;
     private Account account;
     private GroupChat groupChat;
+    private int isLeader;
 }

@@ -96,7 +96,7 @@ public class UpdateRequestJoinClass extends HttpServlet {
                 if (registrationClass.getRequestStatus().equals("Approved")) {
                     List<GroupChat> groupChats = groupChatDAO.getAllGroupChatByClassId(registrationClass.getClassId());
                     for (GroupChat groupChat : groupChats) {
-                        Member member = new Member(0, memberAcc, groupChat);
+                        Member member = new Member(0, memberAcc, groupChat, 0);
                         memberDAO.saveMemberChat(member);
                         messageDAO.sendMessage(new Message(0, memberAcc.getEmail() + " Has Join! this conversation ", "", memberAcc, groupChat.getId(), null));
                         Notification notification = new Notification(0, "You have been approved to class " + registrationClass.getClassId() + " by " + account.getUsername(), memberAcc, new Date(System.currentTimeMillis()));

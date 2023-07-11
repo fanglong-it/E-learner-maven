@@ -85,6 +85,12 @@ public class ViewGroupChat extends HttpServlet {
                     groupChat.setMember(memberDAO.countTotalMemberByGroupChatId(groupChat.getId()));
                     groupChat.setAccounts(accountDAO.getListAccountByGroupChatId(groupChat.getId()));
                 }
+                
+                
+                //get list student by teacher class
+                List<Account> studentList = accountDAO.getListAccountFromTeacherClass(account.getId());
+                session.setAttribute("students", studentList);
+                
 
                 request.setAttribute("groupChats", groupChats);
                 request.setAttribute("rows", rows);

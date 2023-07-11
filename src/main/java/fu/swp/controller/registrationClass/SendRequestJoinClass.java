@@ -76,6 +76,7 @@ public class SendRequestJoinClass extends HttpServlet {
             NotificationDAO notificationDAO = new NotificationDAO();
             AccountDAO accountDAO = new AccountDAO();
             if (account != null) {
+            	
                 String classId = request.getParameter("selectedClassId");
                 String courseId = request.getParameter("courseId");
                 if (account.getRole().getRole_name().equals("TEACHER")) {

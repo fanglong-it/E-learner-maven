@@ -2,3 +2,5 @@ id=1,badWord=dm
 id=2,badWord=dit me may
 id=3,badWord=lon
 id=4,badWord=cac
+id=5,badWord=Duma
+id=6,badWord=chet di me m
