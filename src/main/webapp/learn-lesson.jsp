@@ -1,5 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page import="fu.swp.model.Account" %>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -28,7 +29,7 @@
                             <div class="col">
                                 <div class="card">
                                     <div class="card-body">
-                                        <a href=""><h5 class="card-title">${l.lessonName}</h5></a>
+                                        <a href="learn-lesson?lessonId=${l.id}"><h5 class="card-title">${l.lessonName}</h5></a>
                                     </div>
                                 </div>
                             </div>

@@ -75,15 +75,15 @@ public class ManagerClass extends HttpServlet {
                 ClassDAO classDAO = new ClassDAO();
                 List<fu.swp.model.Class> classes = classDAO.getClassByTeacherId(account.getId());
                 request.setAttribute("classes", classes);
-                if(account.getRole().getRole_name().equals(Base.ROLE_ADMIN)){
-                    AccountDAO accountDAO = new AccountDAO();
-                    CourseDAO courseDAO = new CourseDAO();
-                    String courseId = request.getParameter("courseId") == null ? "" : request.getParameter("courseId");
-                    request.setAttribute("classes", classDAO.getClassByCourseId(Integer.parseInt(courseId)));
-                    request.setAttribute("accounts", accountDAO.getListAccountsTeacher());
-                    request.setAttribute("course", courseDAO.getCourseById(Integer.parseInt(courseId)));
-                    url = "/admin/courses.jsp";
-                }
+//                if(account.getRole().getRole_name().equals(Base.ROLE_ADMIN)){
+//                    AccountDAO accountDAO = new AccountDAO();
+//                    CourseDAO courseDAO = new CourseDAO();
+//                    String courseId = request.getParameter("courseId") == null ? "" : request.getParameter("courseId");
+//                    request.setAttribute("classes", classDAO.getClassByCourseId(Integer.parseInt(courseId)));
+//                    request.setAttribute("accounts", accountDAO.getListAccountsTeacher());
+//                    request.setAttribute("course", courseDAO.getCourseById(Integer.parseInt(courseId)));
+//                    url = "/admin/courses.jsp";
+//                }
             } else {
                 url = "Login.jsp";
             }

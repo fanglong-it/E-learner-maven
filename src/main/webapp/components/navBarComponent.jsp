@@ -53,7 +53,7 @@
 							<c:choose>
 								<c:when test="${sessionScope.notifications.size() > 0}">
 									<c:forEach var="noti" items="${sessionScope.notifications}">
-										<a href="#" class="dropdown-item mr-5">${noti.content}</a>
+										<a href="request-history" class="dropdown-item mr-5">${noti.content}</a>
 									</c:forEach>
 								</c:when>
 								<c:otherwise>
