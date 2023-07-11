@@ -1,5 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@page import="fu.swp.model.Account"%>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -84,7 +85,7 @@
 															<div class="card-body">
 																<div class="d-flex flex-start align-items-center">
 																	<img class="rounded-circle shadow-1-strong me-3"
-																		src="img/${feed.userId.avatar}" alt="avatar"
+																		src="images/${feed.userId.avatar}" alt="avatar"
 																		width="60" height="60" />
 																	<div>
 																		<h6 class="fw-bold text-primary mb-1">${feed.userId.fullname}</h6>
@@ -92,6 +93,13 @@
 																	</div>
 																</div>
 																<p class="mt-3 mb-4 pb-2">${feed.content}</p>
+
+																<div>
+																	<c:forEach var="i" begin="1" end="${feed.star}">
+																		<i class="fa fa-star"  style="color: yellow;"></i>
+																		<!-- Replace "fa fa-star" with your desired star icon class -->
+																	</c:forEach>
+																</div>
 															</div>
 														</c:forEach>
 
@@ -103,7 +111,7 @@
 
 																	<div class="d-flex flex-start w-100">
 																		<img class="rounded-circle shadow-1-strong me-3"
-																			src="img/${sessionScope.account.avatar }"
+																			src="images/${sessionScope.account.avatar }"
 																			alt="avatar" width="40" height="40" />
 
 																		<div class="form-outline w-100">

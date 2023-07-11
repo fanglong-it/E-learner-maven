@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import fu.swp.dao.AccountDAO;
+import fu.swp.dao.RoleDAO;
 import fu.swp.model.Account;
 import fu.swp.model.Role;
 import fu.swp.model.Role.Type;
@@ -21,11 +22,8 @@ import fu.swp.utils.UploadImage;
  * Servlet implementation class ManagerAccountAdmin
  */
 @WebServlet("/admin/manager-account")
-@MultipartConfig(
-        fileSizeThreshold = 1024 * 1024 * 10,
-        maxFileSize = 1024 * 1024 * 50,
-        maxRequestSize = 1024 * 1024 * 100
-)
+@MultipartConfig(fileSizeThreshold = 1024 * 1024 * 10, maxFileSize = 1024 * 1024 * 50, maxRequestSize = 1024 * 1024
+		* 100)
 public class ManagerAccountAdmin extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private static final String UPLOAD_DIR = "images";
@@ -47,10 +45,10 @@ public class ManagerAccountAdmin extends HttpServlet {
 		String url = "/manager-account-admin.jsp";
 		try {
 			HttpSession session = request.getSession();
-			
+
 			AccountDAO accountDAO = new AccountDAO();
 			List<Account> accounts = accountDAO.getListAccounts();
-			
+
 			Type[] roles = Role.Type.values();
 			session.setAttribute("roles", roles);
 			request.setAttribute("accounts", accounts);
@@ -72,22 +70,34 @@ public class ManagerAccountAdmin extends HttpServlet {
 		String url = "/admin/manager-account";
 		try {
 			AccountDAO accountDAO = new AccountDAO();
-			String accountId = request.getParameter("accountId") == null ? "" : request.getParameter("accountId");
+			RoleDAO roleDAO = new RoleDAO();
+			String accountId = request.getParameter("accountId") == null ? "0" : request.getParameter("accountId");
+			String username = request.getParameter("username");
 			String email = request.getParameter("email");
 			String phone = request.getParameter("phone");
 			String fullname = request.getParameter("fullname");
 			String address = request.getParameter("address");
 			String filename = UploadImage.uploadFile(request, "images");
+			String status = request.getParameter("status");
 			String role = request.getParameter("role");
-			
-			
-			
-			
+
+			Account account = Account.builder().id(Integer.parseInt(accountId)).username(username).email(email)
+					.phone(phone).fullname(fullname).address(address).avatar(filename).status(Integer.parseInt(status))
+					.role(roleDAO.getRoleByRoleName(role)).build();
+			if (accountId.equals("0")) {// save
+				String password = request.getParameter("password");
+				account.setPassword(password);
+				accountDAO.saveAccount(account);
+			} else {
+				// update
+				accountDAO.updateAccount(account);
+			}
+
 		} catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();
-		}finally {
-			request.getRequestDispatcher(url).forward(request, response);
+		} finally {
+			doGet(request, response);
 		}
 	}
 

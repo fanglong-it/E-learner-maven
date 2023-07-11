@@ -44,7 +44,97 @@
 				<div class="card">
 					<div class="card-body">
 						<div class="row">
-							<a class="btn btn-primary">Create Account</a>
+							<!-- Button trigger modal -->
+														<button type="button" class="btn btn-primary"
+															data-bs-toggle="modal"
+															data-bs-target="#createModal">
+															Create Account</button>
+
+														<!-- Modal -->
+														<div class="modal fade" id="createModal"
+															tabindex="-1" aria-labelledby="exampleModalLabel"
+															aria-hidden="true">
+															<div class="modal-dialog">
+																<div class="modal-content">
+																	<form
+																		action="${pageContext.request.contextPath}/admin/manager-account"
+																		enctype="multipart/form-data" method="post">
+																		<div class="modal-header">
+																			<h5 class="modal-title" id="exampleModalLabel">Update
+																				account</h5>
+																			<button type="button" class="btn-close"
+																				data-bs-dismiss="modal" aria-label="Close"></button>
+																		</div>
+																		<div class="modal-body">
+																			<div class="form-group">
+																			<input
+																					type="hidden" name="accountId" value="0"
+																					class="form-control">
+																			</div>
+																			<div class="form-group">
+																				<label class="form-label">username</label> <input
+																					type="text" name="username"
+																					value="" class="form-control" required="required">
+																			</div>
+																			<div class="form-group">
+																				<label class="form-label">password</label> <input
+																					type="text" name="password"
+																					value="123456" readonly="readonly" class="form-control" required="required">
+																			</div>
+																			<div class="form-group">
+																				<label class="form-label">email</label> <input
+																					type="text" name="email" value=""
+																					class="form-control" required="required">
+																			</div>
+																			<div class="form-group">
+																				<label class="form-label">phone</label> <input
+																					type="text" name="phone" value=""
+																					class="form-control" required="required">
+																			</div>
+																			<div class="form-group">
+																				<label class="form-label">fullname</label> <input
+																					type="text" name="fullname" value=""
+																					class="form-control" required="required">
+																			</div>
+																			<div class="form-group">
+																				<label class="form-label">address</label> <input
+																					type="text" name="address" value=""
+																					class="form-control" required="required">
+																			</div>
+																			<div class="form-group">
+																				<label class="form-label">image</label> <input
+																					type="file" name="photo" value=""
+																					class="form-control" required="required">
+																			</div>
+																			<div class="form-group">
+																				<label class="form-label">Status</label> <select
+																					class="form-select" name="status" required="required">
+																					<option value="1" selected="selected">Active</option>
+																					<option value="0">In Active</option>
+																				</select>
+																			</div>
+																			<div class="form-group">
+																				<label class="form-label">Role</label> <select
+																					class="form-select" name="role">
+																					<option value="${c.role.role_name}" selected="selected">${c.role.role_name}</option>
+																					<c:forEach var="role" items="${sessionScope.roles}">
+																						<option value="${role}">${role}</option>
+																					</c:forEach>
+																				</select>
+																			</div>
+
+																		</div>
+																		<div class="modal-footer">
+																			<button type="button" class="btn btn-secondary"
+																				data-bs-dismiss="modal">Close</button>
+																			<button type="submit" class="btn btn-primary">Save
+																				changes</button>
+																		</div>
+
+																	</form>
+																</div>
+															</div>
+														</div>
 						</div>
 						<div class="row align-content-center">
 							<div class="">
@@ -95,8 +185,8 @@
 															<div class="modal-dialog">
 																<div class="modal-content">
 																	<form
-																		action="${pageContext.request.contextPath}/admin/update-account"
-																		enctype="multipart/form-data">
+																		action="${pageContext.request.contextPath}/admin/manager-account"
+																		enctype="multipart/form-data" method="post">
 																		<div class="modal-header">
 																			<h5 class="modal-title" id="exampleModalLabel">Update
 																				account</h5>
@@ -108,6 +198,11 @@
 																				<label class="form-label">Id</label> <input
 																					type="text" name="accountId" value="${c.id}"
 																					class="form-control">
+																			</div>
+																			<div class="form-group">
+																				<label class="form-label">username</label> <input
+																					type="text" name="username" readonly="readonly"
+																					value="${c.username}" class="form-control">
 																			</div>
 																			<div class="form-group">
 																				<label class="form-label">email</label> <input
@@ -135,8 +230,16 @@
 																					class="form-control">
 																			</div>
 																			<div class="form-group">
+																				<label class="form-label">Status</label> <select
+																					class="form-select" name="status">
+																					<option value="1" selected="selected">Active</option>
+																					<option value="0">In Active</option>
+																				</select>
+																			</div>
+																			<div class="form-group">
 																				<label class="form-label">Role</label> <select
 																					class="form-select" name="role">
+																					<option value="${c.role.role_name}" selected="selected">${c.role.role_name}</option>
 																					<c:forEach var="role" items="${sessionScope.roles}">
 																						<option value="${role}">${role}</option>
 																					</c:forEach>
