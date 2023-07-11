@@ -403,7 +403,7 @@ public class AccountDAO implements Serializable {
 	public List<Account> getListAccountsTeacher() throws SQLException, Exception {
 		ArrayList<Account> accounts = new ArrayList<>();
 		String query = "SELECT * From Account a left outer join [Role] r on a.roleId  = r.roleId "
-				+ "WHERE a.roleId = 3";
+				+ "WHERE a.roleId = 2";
 		try {
 			con = DBContext.makeConnection();
 			if (con != null) {
