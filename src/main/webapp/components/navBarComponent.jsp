@@ -35,15 +35,15 @@
 						</div>
 					</c:if>
 
-					<c:if test="${sessionScope.account.role.role_name == 'TEACHER'}">
+					<%-- <c:if test="${sessionScope.account.role.role_name == 'TEACHER'}">
 						<div class="nav-item dropdown">
 							<a href="#" class="nav-link dropdown-toggle"
 								data-bs-toggle="dropdown">Manager</a>
 							<div class="dropdown-menu fade-down m-0">
-								<a href="teacher/classes" class="dropdown-item">MANAGE CLASS</a>
+								<a href="manager-class" class="dropdown-item">View class</a>
 							</div>
 						</div>
-					</c:if>
+					</c:if> --%>
 
 
 					<div class="nav-item dropdown">
@@ -68,11 +68,12 @@
 						<a href="#" class="nav-link dropdown-toggle"
 							data-bs-toggle="dropdown">Your Class</a>
 						<div class="dropdown-menu fade-down m-0">
-							<c:if test="${sessionScope.account.role.role_name != 'STUDENT'}">
-								<a class="dropdown-item" href="#">CREATE CHAT</a>
+							<c:if test="${sessionScope.account.role.role_name == 'TEACHER'}">
+								<a href="manager-class" class="dropdown-item">View class</a>
 							</c:if>
-							<a href="view-group-chat" class="dropdown-item">GROUP CHATs</a> <a
-								href="manager-class" class="dropdown-item">REQUESTS</a>
+							<a href="view-group-chat" class="dropdown-item">View group
+								chat</a>
+
 						</div>
 					</div>
 				</c:when>

@@ -25,7 +25,7 @@ public class UrlHelper {
     }
 
     public static String getResourceUrl (String url) {
-        String resource = url.replace("/E-Learner", "");
+        String resource = url.replace("/Elearning", "");
         resource = minimizeUrl(resource);
         return resource;
     }
