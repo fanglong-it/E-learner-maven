@@ -70,10 +70,10 @@
 						<div class="dropdown-menu fade-down m-0">
 							<c:if test="${sessionScope.account.role.role_name == 'TEACHER'}">
 								<a href="manager-class" class="dropdown-item">View class</a>
+								<a href="manager-course" class="dropdown-item">View course</a>
 							</c:if>
 							<a href="view-group-chat" class="dropdown-item">View group
 								chat</a>
-
 						</div>
 					</div>
 				</c:when>

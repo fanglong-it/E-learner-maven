@@ -22,7 +22,7 @@ import javax.servlet.http.HttpSession;
  *
  * @author DW
  */
-//@WebServlet(name = "ManagerCourse", urlPatterns = {"/manager-course"})
+@WebServlet(name = "ManagerCourse", urlPatterns = {"/manager-course"})
 public class ManagerCourse extends HttpServlet {
 
     /**
@@ -73,7 +73,7 @@ public class ManagerCourse extends HttpServlet {
                 List<Course> courses = courseDAO.getAllCoursesByTeacherId(account.getId());
                 if (account.getRole().getRole_name().equals(Base.ROLE_ADMIN)) {
                     courses = courseDAO.getAllCourses();
-                    url = "courses.jsp/admin/courses.jsp";
+                    url = "/admin/courses.jsp";
                 }
                 request.setAttribute("courses", courses);
             } else {

@@ -69,6 +69,7 @@
                                 <th scope="col">Description</th>
                                 <th scope="col">videoUrl</th>
                                 <th scope="col">courseId</th>
+                                <th scope="col">Action</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -82,7 +83,7 @@
                                     <td>${c.courseId}</td>
                                     <td>
                                         <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#exampleModal${counter.count}">
-                                            Create Lesson
+                                            Update Lesson
                                         </button>
                                         <!-- Modal -->
                                         <div class="modal fade" id="exampleModal${counter.count}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
