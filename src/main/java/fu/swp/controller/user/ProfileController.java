@@ -108,6 +108,9 @@ public class ProfileController extends HttpServlet {
         try {
             Part filePart = request.getPart("photo");
             fileName = (String) getFileName(filePart);
+            if(fileName.isEmpty()) {
+            	return "";
+            }
             String applicationPath = request.getServletContext().getRealPath("");
             String basePath = applicationPath + File.separator + UPLOAD_DIR + File.separator;
             InputStream inputStream = null;

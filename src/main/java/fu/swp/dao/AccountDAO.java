@@ -214,7 +214,7 @@ public class AccountDAO implements Serializable {
 	}
 
 	public Account updateAccountStatus(int accountId, int status) throws SQLException, Exception {
-		String query = "UPDATE Accoun\n" + " SET status=? WHERE id= ?;";
+		String query = "UPDATE Account\n" + " SET status=? WHERE id= ?;";
 		try {
 			con = DBContext.makeConnection();
 			if (con != null) {

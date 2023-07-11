@@ -33,13 +33,13 @@ public class DeleteAccountAdmin extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		String url = "manager-account.jsp";
+		String url = "/manager-account.jsp";
 		try {
 			AccountDAO accountDAO = new AccountDAO();
 			String accountId = request.getParameter("accountId");
 			String status = request.getParameter("status");
 			accountDAO.updateAccountStatus(Integer.parseInt(accountId), Integer.parseInt(status));
-			url = "admin/manager-account";
+			url = "/admin/manager-account";
 		} catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();
