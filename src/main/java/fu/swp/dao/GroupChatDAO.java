@@ -211,4 +211,32 @@ public class GroupChatDAO {
 		return null;
 	}
 
+	public GroupChat insertGroupChatAdmin(GroupChat groupChat) throws SQLException, Exception {
+		String query = "INSERT INTO [dbo].[GroupChat]\r\n" + "           ([groupChatName],[isPrivate],[classId])\r\n"
+				+ "     VALUES\r\n" + "           (?,?,?);";
+		try {
+			con = DBContext.makeConnection();
+			if (con != null) {
+				ps = con.prepareStatement(query);
+				ps.setString(1, groupChat.getGroupChatName());
+				ps.setInt(2, groupChat.getIsPrivate());
+				ps.setInt(3, groupChat.getClas().getId());
+				if (ps.executeUpdate() > 0) {
+					return getLastGroupChat();
+				}
+			}
+		} finally {
+			if (rs != null) {
+				rs.close();
+			}
+			if (ps != null) {
+				ps.close();
+			}
+			if (con != null) {
+				con.close();
+			}
+		}
+		return null;
+	}
+
 }

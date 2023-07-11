@@ -47,15 +47,15 @@ public class AddClassController extends HttpServlet {
 			clazz.setCourse(course);
 
 			ClassDAO classDAO = new ClassDAO();
-			classDAO.insertClass(clazz);
+			Class classResult = classDAO.insertClass(clazz);
 
 			// Save group chat
 			GroupChat groupChat = GroupChat.builder().id(0)
-					.groupChatName(course.getCourseName() + "-" + clazz.getClassName()).clas(null).member(teacherId)
+					.groupChatName(course.getCourseName() + "-" + clazz.getClassName()).clas(classResult).member(teacherId)
 					.isPrivate(0).build();
 			GroupChatDAO groupChatDAO = new GroupChatDAO();
 			MemberDAO memberDAO = new MemberDAO();
-			GroupChat result = groupChatDAO.insertGroupChat(groupChat);
+			GroupChat result = groupChatDAO.insertGroupChatAdmin(groupChat);
 			Member memTeacher = Member.builder().id(0).groupChat(result).account(teacher).isLeader(1).build();
 			memberDAO.saveMemberChat(memTeacher);
 
