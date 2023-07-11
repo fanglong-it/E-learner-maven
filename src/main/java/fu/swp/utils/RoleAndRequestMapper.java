@@ -51,7 +51,7 @@ public class RoleAndRequestMapper {
         String key = "";
         if (allowedType == null || allowedType.isEmpty()) {
             
-             key = url.replace("http://localhost:8084/E-Learner/", "http://localhost:8084/E-Learner/HomeController");
+             key = url.replace("http://localhost:8084/Elearning/", "http://localhost:8084/Elearning/HomeController");
             
             if (key == null || key.isEmpty()) return true;
             
@@ -70,7 +70,7 @@ public class RoleAndRequestMapper {
         if (isAllowAnyOneToAccess(url)) {
             List<Type> allowedType = currentMapping.get(minimizeUrl(url));
             if (allowedType == null || allowedType.isEmpty()) {
-                String key = url.replace("http://localhost:8084/E-Learner/HomeController", "");
+                String key = url.replace("http://localhost:8084/Elearning/HomeController", "");
             if (key == null || key.isEmpty()) return true;
                 Logger.getLogger(this.getClass().getSimpleName()).info("Checking: " + key);
                 if (key.indexOf("?") >= 0) {

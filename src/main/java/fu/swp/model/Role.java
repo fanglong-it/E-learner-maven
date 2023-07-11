@@ -10,11 +10,13 @@
  */
 package fu.swp.model;
 
+import java.io.Serializable;
+
 /**
  *
  * @author Fangl
  */
-public class Role {
+public class Role implements Serializable{
 
     public enum Type {
         admin, teacher, student, customer
