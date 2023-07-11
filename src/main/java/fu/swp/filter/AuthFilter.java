@@ -100,7 +100,7 @@ public class AuthFilter implements Filter {
         }
 
         log("Requesting resource " + requestedResource + " Not allow to access");
-        response.sendRedirect("Login.jsp");
+        response.sendRedirect("/Login.jsp");
     }
 
     /**

@@ -24,7 +24,7 @@ import javax.servlet.http.HttpSession;
  *
  * @author ADMIN
  */
-@WebServlet(name = "HomeController", urlPatterns = {"/HomeController"})
+@WebServlet(name = "HomeController", urlPatterns = {"/HomeController", "/"})
 public class HomeController extends HttpServlet {
 
     /**

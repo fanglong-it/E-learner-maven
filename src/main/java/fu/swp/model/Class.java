@@ -18,7 +18,6 @@ import lombok.Setter;
  */
 @Builder
 @AllArgsConstructor
-@NoArgsConstructor
 @Getter
 @Setter
 public class Class implements Serializable{
@@ -30,4 +29,9 @@ public class Class implements Serializable{
     private String image;
     private int status;
     private Course course;
+
+    public Class() {
+        status = 1;
+        dateCreate = new Date();
+    }
 }

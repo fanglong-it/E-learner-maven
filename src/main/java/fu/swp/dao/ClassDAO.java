@@ -5,11 +5,10 @@
 package fu.swp.dao;
 
 import fu.swp.context.DBContext;
+import fu.swp.model.Class;
 import fu.swp.model.Lesson;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -148,6 +147,98 @@ public class ClassDAO {
                 ps.setInt(2, userId);
                 rs = ps.executeQuery();
                 if (rs.next()) {
+                    return true;
+                }
+            }
+        } finally {
+            if (rs != null) {
+                rs.close();
+            }
+            if (ps != null) {
+                ps.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+        return false;
+    }
+
+    public void insertClass(Class clazz) throws Exception {
+        String query = "insert into Class (className, maxStudent, userId, dateCreate, image, status, courseId) " +
+                "values (?, ?, ?, ?, ?, ?, ?);";
+
+        try {
+            con = DBContext.makeConnection();
+            if (con != null) {
+                ps = con.prepareStatement(query);
+                ps.setString(1, clazz.getClassName());
+                ps.setInt(2, clazz.getMaxStudent());
+                ps.setInt(3, clazz.getAccount().getId());
+                ps.setDate(4, new Date(clazz.getDateCreate().getTime()));
+                ps.setString(5, clazz.getImage());
+                ps.setInt(6, clazz.getStatus());
+                ps.setInt(7, clazz.getCourse().getId());
+                ps.executeUpdate();
+            }
+        } finally {
+            if (rs != null) {
+                rs.close();
+            }
+            if (ps != null) {
+                ps.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+    }
+
+    public boolean updateClass(Class clazz) throws Exception {
+        String query = "update Class " +
+                "set className=?, " +
+                "   maxStudent=?, " +
+                "   userId=?, " +
+                "   image=?, " +
+                "   status=? " +
+                "where id=?";
+
+        try {
+            con = DBContext.makeConnection();
+            if (con != null) {
+                ps = con.prepareStatement(query);
+                ps.setString(1, clazz.getClassName());
+                ps.setInt(2, clazz.getMaxStudent());
+                ps.setInt(3, clazz.getAccount().getId());
+                ps.setString(4, clazz.getImage());
+                ps.setInt(5, clazz.getStatus());
+                ps.setInt(6, clazz.getId());
+                if (ps.executeUpdate() > 0) {
+                    return true;
+                }
+            }
+        } finally {
+            if (rs != null) {
+                rs.close();
+            }
+            if (ps != null) {
+                ps.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+        return false;
+    }
+
+    public boolean deleteClass(int classId) throws Exception {
+        String query = "delete from Class where id=?";
+        try {
+            con = DBContext.makeConnection();
+            if (con != null) {
+                ps = con.prepareStatement(query);
+                ps.setInt(1, classId);
+                if (ps.executeUpdate() > 0) {
                     return true;
                 }
             }
