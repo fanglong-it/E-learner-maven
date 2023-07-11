@@ -73,7 +73,6 @@ public class AccountDAO implements Serializable {
 				}
 			}
 		} finally {
-			
 
 		}
 		return null;
@@ -210,6 +209,33 @@ public class AccountDAO implements Serializable {
 				con.close();
 			}
 
+		}
+		return null;
+	}
+
+	public Account updateAccountStatus(int accountId, int status) throws SQLException, Exception {
+		String query = "UPDATE Accoun\n" + " SET status=? WHERE id= ?;";
+		try {
+			con = DBContext.makeConnection();
+			if (con != null) {
+				ps = con.prepareStatement(query);
+				ps.setInt(1, status);
+				ps.setInt(2, accountId);
+
+				if (ps.executeUpdate() > 0) {
+					return getAccountById(accountId);
+				}
+			}
+		} finally {
+			if (rs != null) {
+				rs.close();
+			}
+			if (ps != null) {
+				ps.close();
+			}
+			if (con != null) {
+				con.close();
+			}
 		}
 		return null;
 	}

@@ -7,6 +7,7 @@ package fu.swp.model;
 import java.io.Serializable;
 import java.util.Date;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -16,16 +17,16 @@ import lombok.Setter;
  * @author DW
  */
 
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-public class FeedBack implements Serializable{
-    private int id;
-    private int star;
-    private String content;
-    private Date date;
-    private int userId;
+public class FeedBack implements Serializable {
+	private int id;
+	private int star;
+	private String content;
+	private Date date;
+	private Account userId;
+	private int teacherId;
 }
-
-

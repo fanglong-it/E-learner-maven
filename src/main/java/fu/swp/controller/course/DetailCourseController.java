@@ -6,10 +6,12 @@ package fu.swp.controller.course;
 
 import fu.swp.dao.ClassDAO;
 import fu.swp.dao.CourseDAO;
+import fu.swp.dao.FeedBackDAO;
 import fu.swp.dao.LessonDAO;
 import fu.swp.dao.RegistrationDAO;
 import fu.swp.model.Account;
 import fu.swp.model.Course;
+import fu.swp.model.FeedBack;
 import fu.swp.model.Lesson;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -69,6 +71,7 @@ public class DetailCourseController extends HttpServlet {
         CourseDAO courseDAO = new CourseDAO();
         LessonDAO lessonDAO = new LessonDAO();
         ClassDAO classDAO = new ClassDAO();
+        FeedBackDAO feedBackDAO = new FeedBackDAO();
         RegistrationDAO registrationDAO = new RegistrationDAO();
 
         String courseId = request.getParameter("courseId") == null ? "" : request.getParameter("courseId");
@@ -87,6 +90,8 @@ public class DetailCourseController extends HttpServlet {
             request.setAttribute("isRegisterCourse", currentAccount == null ? false : registrationDAO.isRegistration(currentAccount.getId(), course.getId()));
             request.setAttribute("isOwner", classDAO.isOwnerCourse(course.getId(), currentAccount.getId()));
 
+            
+            
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
