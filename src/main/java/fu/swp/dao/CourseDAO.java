@@ -193,16 +193,18 @@ public class CourseDAO {
         return courses;
     }
 
-    public List<Course> getAllCoursesIncluceTeacher(String searchValue) throws SQLException, Exception {
-        String query = "SELECT  DISTINCT c.id , c.courseName , c.status , c.[image] , c.description, c.createDate, c2.userId as accountId from Course c \n"
-                + "left outer join Class c2 ON c.id = c2.courseId "
-                + "where c.courseName like ?";
+    public List<Course> getAllCoursesIncluceTeacher(String searchValue, String teacherName) throws SQLException, Exception {
+        String query = "SELECT  DISTINCT c.id , c.courseName , c.status , c.[image] , c.description, c.createDate, c2.userId as accountId from Course c\r\n"
+        		+ "      left outer join Class c2 ON c.id = c2.courseId \r\n"
+        		+ "	  left outer join Account a on c2.userId = a.id\r\n"
+        		+ "     where c.courseName like ? and a.fullname like ? ";
         ArrayList<Course> courses = new ArrayList<>();
         try {
             con = DBContext.makeConnection();
             if (con != null) {
                 ps = con.prepareStatement(query);
                 ps.setString(1, "%" + searchValue + "%");
+                ps.setNString(2, "%" + teacherName + "%");
                 rs = ps.executeQuery();
                 while (rs.next()) {
                     courses.add(Course.builder()

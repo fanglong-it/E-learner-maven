@@ -78,8 +78,9 @@ public class ListCourseController extends HttpServlet {
 //            }
 
             String searchValue = request.getParameter("courseName") == null ? "" : request.getParameter("courseName");
+            String teacherName = request.getParameter("teacherName") == null ? "" : request.getParameter("teacherName");
             CourseDAO courseDAO = new CourseDAO();
-            List<Course> courses = courseDAO.getAllCoursesIncluceTeacher(searchValue);
+            List<Course> courses = courseDAO.getAllCoursesIncluceTeacher(searchValue, teacherName);
             request.setAttribute("courses", courses);
 
         } catch (Exception e) {
