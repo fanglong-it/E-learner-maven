@@ -6,8 +6,10 @@ package fu.swp.controller.user;
 
 import fu.swp.dao.AccountDAO;
 import fu.swp.dao.FeedBackDAO;
+import fu.swp.dao.RegistrationDAO;
 import fu.swp.model.Account;
 import fu.swp.model.FeedBack;
+import fu.swp.model.RegistrationClass;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -56,12 +58,25 @@ public class ViewTeacherProfileController extends HttpServlet {
 			throws ServletException, IOException {
 		String url = "profile-teacher.jsp";
 		try {
+			HttpSession session = request.getSession();
+			
 			FeedBackDAO feedBackDAO = new FeedBackDAO();
 			AccountDAO accountDAO = new AccountDAO();
-			int userId = Integer.valueOf(request.getParameter("accountId"));
-			request.setAttribute("acc", accountDAO.getAccountById(userId));
+			RegistrationDAO registrationDAO = new RegistrationDAO();
+			int teacherId = Integer.valueOf(request.getParameter("accountId"));
+			request.setAttribute("acc", accountDAO.getAccountById(teacherId));
 
-			List<FeedBack> feedBacks = feedBackDAO.getFeedBackByTeacherId(userId);
+			Account account = (Account) session.getAttribute("account");
+			RegistrationClass registrationClass = registrationDAO.getAccountIsRegistration(teacherId, account.getId());
+			if(registrationClass != null) {
+				request.setAttribute("IsRegis", registrationClass);
+			}
+			
+			if(account.getId() == teacherId) {
+				request.setAttribute("isTeacher", "true");
+			}
+			
+			List<FeedBack> feedBacks = feedBackDAO.getFeedBackByTeacherId(teacherId);
 			request.setAttribute("feedbacks", feedBacks);
 
 		} catch (Exception e) {

@@ -25,6 +25,49 @@
 										alt="Avatar" width="200" height="200">
 								</div>
 							</div>
+							<div class="row">
+								<!-- Button trigger modal -->
+								<c:if test="${requestScope.IsRegis != null && sessionScope.account.role.role_name == 'STUDENT'}">
+										<button type="button" class="btn btn-primary"
+										data-bs-toggle="modal" data-bs-target="#exampleModal">
+										Send message To Teacher</button>
+								</c:if>
+
+								<!-- Modal -->
+								<div class="modal fade" id="exampleModal" tabindex="-1"
+									aria-labelledby="exampleModalLabel" aria-hidden="true">
+									<div class="modal-dialog">
+									<form action="Send-message-to-teacher" method="post">
+										<div class="modal-content">
+											<div class="modal-header">
+												<h5 class="modal-title" id="exampleModalLabel">Message</h5>
+												
+												<button type="button" class="btn-close"
+													data-bs-dismiss="modal" aria-label="Close"></button>
+											</div>
+											<div class="modal-body">
+												<div class="row">
+													<div class="form-group">
+														<label>Teacher Id</label>
+														<input class="form-control" readonly="readonly" type="text" name="teacherId" value="${requestScope.acc.id}">
+													</div>
+													<div class="form-group">
+														<label>Message</label>
+														<input class="form-control" type="text" name="message" value="">
+													</div>
+												</div>
+											</div>
+											<div class="modal-footer">
+												<button type="button" class="btn btn-secondary"
+													data-bs-dismiss="modal">Close</button>
+												<button type="submit" class="btn btn-primary">Save
+													changes</button>
+											</div>
+										</div>
+									</form>
+									</div>
+								</div>
+							</div>
 						</div>
 						<div class="col-sm-7">
 							<form action="profile" class="form-control m-1 bg-white"
@@ -96,7 +139,7 @@
 
 																<div>
 																	<c:forEach var="i" begin="1" end="${feed.star}">
-																		<i class="fa fa-star"  style="color: yellow;"></i>
+																		<i class="fa fa-star" style="color: yellow;"></i>
 																		<!-- Replace "fa fa-star" with your desired star icon class -->
 																	</c:forEach>
 																</div>
@@ -134,12 +177,14 @@
 																			value="${acc.id}">
 																	</div>
 
-																	<div class="float-end mt-2 pt-1">
-																		<button type="submit" class="btn btn-primary btn-sm">Post
-																			comment</button>
-																		<button type="button"
-																			class="btn btn-outline-primary btn-sm">Cancel</button>
-																	</div>
+																	<c:if test="${requestScope.isTeacher == null}">
+																		<div class="float-end mt-2 pt-1">
+																			<button type="submit" class="btn btn-primary btn-sm">Post
+																				comment</button>
+																			<button type="button"
+																				class="btn btn-outline-primary btn-sm">Cancel</button>
+																		</div>
+																	</c:if>
 																</div>
 															</form>
 														</c:if>
