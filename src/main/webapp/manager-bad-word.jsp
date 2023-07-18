@@ -19,10 +19,10 @@
     <title>All Bad Word</title>
 </head>
 <jsp:include page="components/header.jsp"></jsp:include>
+<jsp:include page="components/admin/navbar.jsp"></jsp:include>
 <body id="page-top">
-<jsp:include page="components/navBarComponent.jsp"></jsp:include>
 <div class="container">
-    <h1>Manage Lesson</h1>
+    <h1>Manage Bad Word</h1>
     <div class="row align-content-center">
         <div class="">
             <div class="col-sm-3">

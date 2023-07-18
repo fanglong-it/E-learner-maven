@@ -1,6 +1,6 @@
-<%@ page import="fu.swp.utils.DatetimeUtils" %>
-<%@ page import="fu.swp.model.Course" %>
-<%@ page import="fu.swp.base.Base" %><%--
+<%@ page import="utils.DatetimeUtils" %>
+<%@ page import="model.Course" %>
+<%@ page import="base.Base" %><%--
     Document   : manager-account-admin
     Created on : Jun 22, 2023, 5:15:47 PM
     Author     : DW
@@ -24,7 +24,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>DASHMIN - Admin</title>
+    <title>HAPPY PROGRAMMING - Admin</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="" name="keywords">
     <meta content="" name="description">

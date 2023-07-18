@@ -1,5 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@page import="fu.swp.model.Account" %>
+<%@page import="model.Account" %>
 <!DOCTYPE html>
 <html lang="en">
     <head>

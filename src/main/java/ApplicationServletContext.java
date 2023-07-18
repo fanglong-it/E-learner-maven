@@ -1,9 +1,9 @@
 
-import fu.swp.utils.RoleAndRequestMapper;
+import utils.RoleAndRequestMapper;
 import java.util.Arrays;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
-import fu.swp.model.Role.Type;
+import model.Role.Type;
 
 public class ApplicationServletContext implements ServletContextListener {
 
