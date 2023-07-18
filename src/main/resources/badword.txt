@@ -4,3 +4,5 @@ id=3,badWord=lon
 id=4,badWord=cac
 id=5,badWord=Duma
 id=6,badWord=chet di me m
+id=7,badWord=oc cho
+id=8,badWord=dell
