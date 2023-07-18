@@ -6,19 +6,18 @@ package controller.user;
 
 import dao.AccountDAO;
 import dao.FeedBackDAO;
+import dao.RegistrationDAO;
 import model.Account;
 import model.FeedBack;
-
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.List;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import model.RegistrationClass;
 
 /**
  *
@@ -56,12 +55,25 @@ public class ViewTeacherProfileController extends HttpServlet {
 			throws ServletException, IOException {
 		String url = "profile-teacher.jsp";
 		try {
+			HttpSession session = request.getSession();
+			
 			FeedBackDAO feedBackDAO = new FeedBackDAO();
 			AccountDAO accountDAO = new AccountDAO();
-			int userId = Integer.valueOf(request.getParameter("accountId"));
-			request.setAttribute("acc", accountDAO.getAccountById(userId));
+			RegistrationDAO registrationDAO = new RegistrationDAO();
+			int teacherId = Integer.valueOf(request.getParameter("accountId"));
+			request.setAttribute("acc", accountDAO.getAccountById(teacherId));
 
-			List<FeedBack> feedBacks = feedBackDAO.getFeedBackByTeacherId(userId);
+			Account account = (Account) session.getAttribute("account");
+			RegistrationClass registrationClass = registrationDAO.getAccountIsRegistration(teacherId, account.getId());
+			if(registrationClass != null) {
+				request.setAttribute("IsRegis", registrationClass);
+			}
+			
+			if(account.getId() == teacherId) {
+				request.setAttribute("isTeacher", "true");
+			}
+			
+			List<FeedBack> feedBacks = feedBackDAO.getFeedBackByTeacherId(teacherId);
 			request.setAttribute("feedbacks", feedBacks);
 
 		} catch (Exception e) {

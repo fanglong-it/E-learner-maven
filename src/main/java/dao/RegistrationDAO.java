@@ -62,6 +62,42 @@ public class RegistrationDAO {
         }
         return null;
     }
+    public RegistrationClass getAccountIsRegistration(int teacherId, int accountId) throws SQLException, Exception {
+    	String query = "\r\n"
+    			+ "select * from Class c \r\n"
+    			+ "left join RegistrationClass rc on c.id = rc.classId\r\n"
+    			+ "where c.userId = ? and rc.accountId = ? and rc.requestStatus='Approved'";
+    	try {
+    		con = DBContext.makeConnection();
+    		if (con != null) {
+    			ps = con.prepareStatement(query);
+    			ps.setInt(1, teacherId);
+    			ps.setInt(2, accountId);
+    			rs = ps.executeQuery();
+    			if (rs.next()) {
+    				return RegistrationClass.builder()
+    						.id(rs.getInt("id"))
+    						.requestDate(rs.getDate("requestDate"))
+    						.requestStatus(rs.getString("requestStatus"))
+    						.classId(rs.getInt("classId"))
+    						.accountId(rs.getInt("accountId"))
+    						.build();
+    			}
+    		}
+    	} finally {
+    		if (rs != null) {
+    			rs.close();
+    		}
+    		if (ps != null) {
+    			ps.close();
+    		}
+    		if (con != null) {
+    			con.close();
+    		}
+    		
+    	}
+    	return null;
+    }
 
     public RegistrationClass getLastRegistrationClass() throws SQLException, Exception {
         String query = "Select TOP(1) * from RegistrationClass rc order by rc.id";
