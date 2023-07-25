@@ -59,7 +59,11 @@ public class CreateChat extends HttpServlet {
 			if (students.length <= 0) {
 				request.setAttribute("ERROR", "Please select student to add group Chat!");
 			} else {
-
+				
+				if(students.length == 1) {
+					isPrivate = "1";
+				}
+				
 				GroupChat groupChat = GroupChat.builder().id(0).groupChatName(groupChatName).clas(null)
 						.member(Integer.parseInt(teacherId)).isPrivate(Integer.parseInt(isPrivate)).build();
 				AccountDAO accountDAO = new AccountDAO();

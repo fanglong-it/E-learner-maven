@@ -77,19 +77,16 @@
 															</div>
 															<div class="form-group">
 																<label class="form-label">Select Student</label>
-
-																<c:forEach var="student" varStatus="counter"
-																	items="${sessionScope.students}">
-																	<span class="text-nowrap"> <input
-																		type="checkbox" id="student-${counter.count}" class=""
-																		name="students" value="${student.id}"> <label
-																		class="" for="#student-${counter.count}">${student.fullname}</label>
-																	</span>
-																</c:forEach>
-															</div>
-															<div class="form-group">
-																<label class="form-label">Select Student</label>
-																<input type="checkbox" name="isPrivate" value="1" checked="checked"/>
+																<div class="row">
+																	<c:forEach var="stu" varStatus="counter"
+																		items="${sessionScope.students}">
+																		<span class="text-nowrap"> <input
+																			type="checkbox" id="student-${counter.count}" class=""
+																			name="students" value="${stu.id}"> <label
+																			class="" for="#student-${counter.count}">${stu.fullname}</label>
+																		</span>
+																	</c:forEach>
+																</div>
 															</div>
 														</div>
 													</div>

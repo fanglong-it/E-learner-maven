@@ -59,7 +59,7 @@ public class AccountDAO implements Serializable {
 		String query = "SELECT * From Account a left outer join [Role] r on a.roleId  = r.roleId "
 				+ " WHERE a.id = ? and a.status = '1'";
 		try {
-			con = DBContext.makeConnection();
+			Connection con = DBContext.makeConnection();
 			if (con != null) {
 				ps = con.prepareStatement(query);
 				ps.setInt(1, id);
@@ -72,8 +72,8 @@ public class AccountDAO implements Serializable {
 							.role(new Role(rs.getInt("roleId"), rs.getString("roleName"))).build();
 				}
 			}
-		} finally {
-
+		}catch(Exception e) {
+			e.printStackTrace();
 		}
 		return null;
 	}
@@ -367,30 +367,23 @@ public class AccountDAO implements Serializable {
 
 	public List<Account> getListAccountFromTeacherClass(int teacherId) throws SQLException, Exception {
 		ArrayList<Account> accounts = new ArrayList<>();
-		String query = "select rc.accountId from Class c\r\n"
-				+ "left join RegistrationClass rc on c.id = rc.classId\r\n"
-				+ "where c.userId = ? and rc.accountId is not null\r\n" + "group by accountId ";
+		String query = "select rc.accountId from Class c \n"
+				+ "left join RegistrationClass rc on c.id = rc.classId \n"
+				+ "where c.userId = ? and rc.accountId is not null \n" 
+				+ "group by accountId";
 		try {
-			con = DBContext.makeConnection();
+			Connection con = DBContext.makeConnection();
 			if (con != null) {
-				ps = con.prepareStatement(query);
+			PreparedStatement ps = con.prepareStatement(query);
 				ps.setInt(1, teacherId);
-				rs = ps.executeQuery();
+			ResultSet rs = ps.executeQuery();
 				while (rs.next()) {
-					accounts.add(getAccountById(rs.getInt("accountId")));
+					Account account = getAccountById(rs.getInt("accountId"));
+					accounts.add(account);
 				}
 			}
-		} finally {
-			if (rs != null) {
-				rs.close();
-			}
-			if (ps != null) {
-				ps.close();
-			}
-			if (con != null) {
-				con.close();
-			}
-
+		}catch (Exception e) {
+			e.printStackTrace();// TODO: handle exception
 		}
 		return accounts;
 	}
@@ -402,7 +395,7 @@ public class AccountDAO implements Serializable {
 			con = DBContext.makeConnection();
 			if (con != null) {
 				ps = con.prepareStatement(query);
-				rs = ps.executeQuery();
+				ResultSet rs = ps.executeQuery();
 				while (rs.next()) {
 					accounts.add(Account.builder().id(rs.getInt("id")).username(rs.getString("username"))
 							.password(rs.getString("password")).status(rs.getInt("status")).email(rs.getString("email"))

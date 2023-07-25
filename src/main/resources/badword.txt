@@ -1,7 +1,5 @@
 id=1,badWord=dm
-<<<<<<< HEAD
 id=2,badWord=deo
-=======
 id=2,badWord=dit me may
 id=3,badWord=lon
 id=4,badWord=cac
@@ -9,4 +7,4 @@ id=5,badWord=Duma
 id=6,badWord=chet di me m
 id=7,badWord=oc cho
 id=8,badWord=dell
->>>>>>> ee90299f918566efac7864aef285dce0b07c8956
+id=9,badWord=cuc
