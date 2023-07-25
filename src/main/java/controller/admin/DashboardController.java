@@ -12,6 +12,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import dao.AccountDAO;
+import dao.ClassDAO;
+import dao.CourseDAO;
+
 /**
  *
  * @author DW
@@ -48,6 +52,13 @@ public class DashboardController extends HttpServlet {
             throws ServletException, IOException {
         String url = "/admin-page.jsp";
         try {
+        	ClassDAO classDAO = new ClassDAO();
+        	CourseDAO courseDAO = new CourseDAO();
+        	AccountDAO accountDAO = new AccountDAO();
+        	
+        	request.setAttribute("totalClass", classDAO.countTotalClass());
+        	request.setAttribute("totalCourse", courseDAO.countTotalCourse());
+        	request.setAttribute("totalTeacher", accountDAO.countTotalTeacher());
 
         } catch (Exception e) {
             e.printStackTrace();

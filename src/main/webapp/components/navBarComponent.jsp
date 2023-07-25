@@ -94,8 +94,11 @@
 							<ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
 								<li><a class="dropdown-item"
 									href="${pageContext.request.contextPath}/profile">Information</a></li>
+								
+								<c:if test="${sessionScope.account.role.role_name == 'STUDENT'}">
 								<li><a class="dropdown-item"
 									href="${pageContext.request.contextPath}/request-history">History</a></li>
+								</c:if>
 								<li><a class="dropdown-item bg-danger"
 									href="${pageContext.request.contextPath}/Logout">Logout</a></li>
 							</ul>

@@ -84,6 +84,32 @@ public class ClassDAO {
 		}
 		return null;
 	}
+	
+	
+	public Integer countTotalClass() throws Exception {
+		String query = "SELECT count(Id) as totalClass from Class;";
+		try {
+			con = DBContext.makeConnection();
+			if (con != null) {
+				ps = con.prepareStatement(query);
+				rs = ps.executeQuery();
+				if (rs.next()) {
+					return rs.getInt("totalClass");
+				}
+			}
+		} finally {
+			if (rs != null) {
+				rs.close();
+			}
+			if (ps != null) {
+				ps.close();
+			}
+			if (con != null) {
+				con.close();
+			}
+		}
+		return null;
+	}
 
 	public model.Class getClassLastClass() throws SQLException, Exception {
 		String query = "SELECT top(1) * from Class c order by c.id desc;";

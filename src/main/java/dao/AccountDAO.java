@@ -139,6 +139,31 @@ public class AccountDAO implements Serializable {
 		}
 		return null;
 	}
+	
+	public Integer countTotalTeacher() throws Exception {
+		String query ="SELECT count(id) as totalTeacher from Account where roleId = 3";
+		try {
+			con = DBContext.makeConnection();
+			if (con != null) {
+				ps = con.prepareStatement(query);
+				rs = ps.executeQuery();
+				if (rs.next()) {
+					return rs.getInt("totalTeacher");
+				}
+			}
+		} finally {
+			if (rs != null) {
+				rs.close();
+			}
+			if (ps != null) {
+				ps.close();
+			}
+			if (con != null) {
+				con.close();
+			}
+		}
+		return null;
+	}
 
 	public Account saveAccount(Account account) throws SQLException, Exception {
 		String query = "INSERT INTO Account "

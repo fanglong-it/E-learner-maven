@@ -37,9 +37,6 @@
                                         <div class="col-sm-12 mb-3 mt-4">
                                             <button class="btn btn-primary animated" type="submit">Search</button>
                                         </div>
-                                        <div class="col-sm-12 mt-4">
-                                            <button class="btn btn-secondary animated" type="reset">Reset</button>
-                                        </div>
                                     </div>
                                 </div>
                             </form>
@@ -55,6 +52,9 @@
                         <h1 class="mb-5">Popular Courses</h1>
                     </div>
                     <div class="row g-4 justify-content-center">
+                    <c:if test="${courses.size() <= 0}">
+                    	<p>Don't have any course yet !</p>
+                    </c:if>
                         <c:forEach items="${courses}" var="S" begin="0">
                             <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
                                 <div class="course-item bg-light">
