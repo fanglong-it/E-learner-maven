@@ -11,11 +11,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import base.Base;
 import dao.AccountDAO;
 import dao.RoleDAO;
 import model.Account;
 import model.Role;
 import model.Role.Type;
+import pagination.AccountFilter;
+import pagination.Pagination;
 import utils.UploadImage;
 
 /**
@@ -45,12 +48,18 @@ public class ManagerAccountAdmin extends HttpServlet {
 		String url = "/manager-account-admin.jsp";
 		try {
 			HttpSession session = request.getSession();
-
 			AccountDAO accountDAO = new AccountDAO();
-			List<Account> accounts = accountDAO.getListAccounts();
 
+			String role = request.getParameter("role") == null ? "" : request.getParameter("role");
+			String name = request.getParameter("name") == null ? "" : request.getParameter("name");
+			Pagination pagination = new Pagination(request.getParameter("page") == null ? 1 : Integer.parseInt(request.getParameter("page")),
+					accountDAO.countTotalAccount(), 0, Base.PAGE_SIZE);
+			AccountFilter accountFilter = new AccountFilter(name, role);
+			List<Account> accounts = accountDAO.getListAccounts(pagination, accountFilter);
 			Type[] roles = Role.Type.values();
 			session.setAttribute("roles", roles);
+			
+			request.setAttribute("paging", pagination);
 			request.setAttribute("accounts", accounts);
 		} catch (Exception e) {
 			// TODO: handle exception

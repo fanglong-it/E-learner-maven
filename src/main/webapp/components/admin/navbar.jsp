@@ -6,7 +6,7 @@
     <div class="navbar-nav align-items-center ms-auto">
         <div class="nav-item dropdown  ml-3">
             <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
-                <img class="rounded-circle me-lg-2" src="img/${sessionScope.account.avatar}" alt="" style="width: 40px; height: 40px;">
+                <img class="rounded-circle me-lg-2" src="images/${sessionScope.account.avatar}" alt="" style="width: 40px; height: 40px;">
                 <span class="d-none d-lg-inline-flex">${sessionScope.account.fullname}</span>
             </a>
             <div class="dropdown-menu dropdown-menu-end bg-light border-0 rounded-0 rounded-bottom m-0">

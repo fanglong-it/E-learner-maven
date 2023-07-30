@@ -11,6 +11,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import context.DBContext;
 import model.Role;
+import pagination.AccountFilter;
+import pagination.Pagination;
+
 import java.io.Serializable;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -72,7 +75,7 @@ public class AccountDAO implements Serializable {
 							.role(new Role(rs.getInt("roleId"), rs.getString("roleName"))).build();
 				}
 			}
-		}catch(Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return null;
@@ -139,9 +142,9 @@ public class AccountDAO implements Serializable {
 		}
 		return null;
 	}
-	
+
 	public Integer countTotalTeacher() throws Exception {
-		String query ="SELECT count(id) as totalTeacher from Account where roleId = 3";
+		String query = "SELECT count(id) as totalTeacher from Account where roleId = 3";
 		try {
 			con = DBContext.makeConnection();
 			if (con != null) {
@@ -149,6 +152,31 @@ public class AccountDAO implements Serializable {
 				rs = ps.executeQuery();
 				if (rs.next()) {
 					return rs.getInt("totalTeacher");
+				}
+			}
+		} finally {
+			if (rs != null) {
+				rs.close();
+			}
+			if (ps != null) {
+				ps.close();
+			}
+			if (con != null) {
+				con.close();
+			}
+		}
+		return null;
+	}
+
+	public Integer countTotalAccount() throws Exception {
+		String query = "SELECT count(id) as totalAccount from Account";
+		try {
+			con = DBContext.makeConnection();
+			if (con != null) {
+				ps = con.prepareStatement(query);
+				rs = ps.executeQuery();
+				if (rs.next()) {
+					return rs.getInt("totalAccount");
 				}
 			}
 		} finally {
@@ -392,30 +420,69 @@ public class AccountDAO implements Serializable {
 
 	public List<Account> getListAccountFromTeacherClass(int teacherId) throws SQLException, Exception {
 		ArrayList<Account> accounts = new ArrayList<>();
-		String query = "select rc.accountId from Class c \n"
-				+ "left join RegistrationClass rc on c.id = rc.classId \n"
-				+ "where c.userId = ? and rc.accountId is not null \n" 
-				+ "group by accountId";
+		String query = "select rc.accountId from Class c \n" + "left join RegistrationClass rc on c.id = rc.classId \n"
+				+ "where c.userId = ? and rc.accountId is not null \n" + "group by accountId";
 		try {
 			Connection con = DBContext.makeConnection();
 			if (con != null) {
-			PreparedStatement ps = con.prepareStatement(query);
+				PreparedStatement ps = con.prepareStatement(query);
 				ps.setInt(1, teacherId);
-			ResultSet rs = ps.executeQuery();
+				ResultSet rs = ps.executeQuery();
 				while (rs.next()) {
 					Account account = getAccountById(rs.getInt("accountId"));
 					accounts.add(account);
 				}
 			}
-		}catch (Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();// TODO: handle exception
 		}
 		return accounts;
 	}
 
-	public List<Account> getListAccounts() throws SQLException, Exception {
+	public List<Account> getListAccounts(Pagination pagination, AccountFilter accountFilter)
+			throws SQLException, Exception {
 		ArrayList<Account> accounts = new ArrayList<>();
-		String query = "SELECT * From Account a left outer join [Role] r on a.roleId  = r.roleId ";
+		String query = "SELECT * From Account a left outer join [Role] r on a.roleId  = r.roleId \n"
+				+ "where a.fullname like ? and r.roleName like ? \n"
+				+ " order by a.fullname asc \n" 
+				+ " OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+		try {
+			con = DBContext.makeConnection();
+			if (con != null) {
+				ps = con.prepareStatement(query);
+				ps.setString(1, "%" + accountFilter.getName() + "%");
+				ps.setString(2, "%" + accountFilter.getRole() + "%");
+				ps.setInt(3, pagination.getOffset());
+				ps.setInt(4, pagination.getPageSize());
+
+				ResultSet rs = ps.executeQuery();
+				while (rs.next()) {
+					accounts.add(Account.builder().id(rs.getInt("id")).username(rs.getString("username"))
+							.password(rs.getString("password")).status(rs.getInt("status")).email(rs.getString("email"))
+							.phone(rs.getString("phone")).fullname(rs.getString("fullname"))
+							.address(rs.getString("address")).avatar(rs.getString("avatar"))
+							.role(new Role(rs.getInt("roleId"), rs.getString("roleName"))).build());
+				}
+			}
+		} finally {
+			if (rs != null) {
+				rs.close();
+			}
+			if (ps != null) {
+				ps.close();
+			}
+			if (con != null) {
+				con.close();
+			}
+
+		}
+		return accounts;
+	}
+	public List<Account> getListAccounts()
+			throws SQLException, Exception {
+		ArrayList<Account> accounts = new ArrayList<>();
+		String query = "SELECT * From Account a left outer join [Role] r on a.roleId  = r.roleId \n"
+				+ " order by a.fullname asc \n";
 		try {
 			con = DBContext.makeConnection();
 			if (con != null) {
@@ -439,7 +506,7 @@ public class AccountDAO implements Serializable {
 			if (con != null) {
 				con.close();
 			}
-
+			
 		}
 		return accounts;
 	}

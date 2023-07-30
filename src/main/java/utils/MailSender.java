@@ -13,6 +13,8 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
+import base.Base;
+
 /**
  *
  * @author DW
@@ -22,9 +24,8 @@ public class MailSender {
     public static Boolean send(String subject, String htmlContent, String recipient) {
 
 //        String recipient = "recipient@gmail.com"; // Change to the recipient's email address
-        String sender = "tuanmac2k2@gmail.com"; // Change to your Gmail address
-        String password = "pzpiaxwxxrmvhddz"
-                + "z"; // Change to the app password generated in Step 2
+        String sender = Base.USERNAME_EMAIL; // Change to your Gmail address
+        String password = Base.PASSWORD_EMAIL; // Change to the app password generated in Step 2
 
         // Get the email parameters from the request
 //        String subject = request.getParameter("subject");

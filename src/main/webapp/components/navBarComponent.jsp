@@ -2,7 +2,44 @@
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!-- Navbar Start -->
+<style>
+/* CSS */
+@
+keyframes ringing { 0%, 100% {
+	transform: rotate(0);
+	color: red;
+	/* Set the color to red at the start and end of the animation */
+}
 
+50
+%
+{
+transform
+:
+rotate(
+15deg
+);
+color
+:
+inherit;
+	/* Set the color to the default color (inherit) at the middle of the animation */
+}
+}
+.bell-icon {
+	animation-name: ringing;
+	animation-duration: 1s;
+	animation-timing-function: ease-in-out;
+	animation-iteration-count: infinite;
+}
+
+.long-text-item {
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	max-width: 400px;
+	/* You can adjust this value based on your preference */
+}
+</style>
 <nav
 	class="navbar navbar-expand-lg bg-white navbar-light shadow sticky-top p-0">
 	<a href="index.html"
@@ -48,22 +85,24 @@
 
 					<div class="nav-item dropdown">
 						<a href="#" class="nav-link dropdown-toggle"
-							data-bs-toggle="dropdown"><i class="fas fa-bell"></i></a>
+							data-bs-toggle="dropdown"> <i class="fas fa-bell bell-icon"></i>
+						</a>
 						<div class="dropdown-menu fade-down m-0">
 							<c:choose>
 								<c:when test="${sessionScope.notifications.size() > 0}">
 									<c:forEach var="noti" items="${sessionScope.notifications}">
-										<a href="request-history" class="dropdown-item mr-5">${noti.content}</a>
+										<a href="request-history"
+											class="dropdown-item mr-5 long-text-item">${noti.content}</a>
 									</c:forEach>
 								</c:when>
 								<c:otherwise>
-									<a href="#" class="dropdown-item">Not have any Notification
-										!</a>
+									<a href="#" class="dropdown-item">Not have any
+										Notification!</a>
 								</c:otherwise>
 							</c:choose>
-
 						</div>
 					</div>
+
 					<div class="nav-item dropdown">
 						<a href="#" class="nav-link dropdown-toggle"
 							data-bs-toggle="dropdown">Your Class</a>
@@ -94,10 +133,10 @@
 							<ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
 								<li><a class="dropdown-item"
 									href="${pageContext.request.contextPath}/profile">Information</a></li>
-								
+
 								<c:if test="${sessionScope.account.role.role_name == 'STUDENT'}">
-								<li><a class="dropdown-item"
-									href="${pageContext.request.contextPath}/request-history">History</a></li>
+									<li><a class="dropdown-item"
+										href="${pageContext.request.contextPath}/request-history">History</a></li>
 								</c:if>
 								<li><a class="dropdown-item bg-danger"
 									href="${pageContext.request.contextPath}/Logout">Logout</a></li>

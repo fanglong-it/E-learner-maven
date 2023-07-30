@@ -48,8 +48,7 @@
 											<div class="modal-body">
 												<div class="row">
 													<div class="form-group">
-														<label>Teacher Id</label>
-														<input class="form-control" readonly="readonly" type="text" name="teacherId" value="${requestScope.acc.id}">
+														<input class="form-control" readonly="readonly" type="hidden" name="teacherId" value="${requestScope.acc.id}">
 													</div>
 													<div class="form-group">
 														<label>Message</label>
@@ -124,6 +123,14 @@
 																<p class="mt-3 mb-4 pb-2">Not have any feedback</p>
 															</div>
 														</c:if>
+														<c:if test="${requestScope.feedbacks.size()> 0}">
+															<div class="card">
+																<div class="card-body">
+																	<p class="mt-3 mb-4 pb-2">Total rate: ${requestScope.feedbacks.size()}</p>
+																	
+																</div>
+															</div>
+														</c:if>
 														<c:forEach var="feed" items="${requestScope.feedbacks}">
 															<div class="card-body">
 																<div class="d-flex flex-start align-items-center">
@@ -177,7 +184,7 @@
 																			value="${acc.id}">
 																	</div>
 
-																	<c:if test="${requestScope.isTeacher == null}">
+																	<c:if test="${requestScope.IsRegis != null && requestScope.isTeacher == null}">
 																		<div class="float-end mt-2 pt-1">
 																			<button type="submit" class="btn btn-primary btn-sm">Post
 																				comment</button>

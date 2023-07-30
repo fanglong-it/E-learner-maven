@@ -19,6 +19,7 @@ import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
 import java.io.*;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -181,9 +182,13 @@ public class ContentGroupChat extends HttpServlet {
 						// Handle the uploaded file
 						String fileName = item.getName();
 						if (fileName.length() > 0) {
+							// Generate the new file name with the date format "dd-MM-yyyy"
+							SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy-hh-mm-ss");
+							String currentDate = dateFormat.format(new Date());
+							String sanitizedFileName = sanitizeFileName(fileName);
+							fileName = currentDate + "-" + account.getFullname() + "-" + sanitizedFileName;
 							fileNameDir = fileName;
 							System.out.println("fileName: " + fileName);
-
 							String absolutePath = Constant.rootPath + "webapp/files/" + fileName;
 							System.out.println(absolutePath);
 
@@ -229,4 +234,10 @@ public class ContentGroupChat extends HttpServlet {
 		return "Short description";
 	}// </editor-fold>
 
+	private String sanitizeFileName(String fileName) {
+		// Define a regular expression to match invalid characters in file names
+		String regex = "[^a-zA-Z0-9\\.\\-_]";
+		// Replace invalid characters with an empty string
+		return fileName.replaceAll(regex, "");
+	}
 }

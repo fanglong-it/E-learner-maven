@@ -29,7 +29,7 @@
 <jsp:include page="components/header.jsp"></jsp:include>
 <body id="page-top">
 	<jsp:include page="components/navBarComponent.jsp"></jsp:include>
-	<div class="container">
+	<div class="container" id="app">
 		<h1>Your Group Chat</h1>
 		<div class="row">
 			<div class="col-sm-2"></div>
@@ -81,8 +81,8 @@
 																	<c:forEach var="stu" varStatus="counter"
 																		items="${sessionScope.students}">
 																		<span class="text-nowrap"> <input
-																			type="checkbox" id="student-${counter.count}" class=""
-																			name="students" value="${stu.id}"> <label
+																			type="checkbox" id="student-${counter.count}"
+																			class="" name="students" value="${stu.id}"> <label
 																			class="" for="#student-${counter.count}">${stu.fullname}</label>
 																		</span>
 																	</c:forEach>
@@ -171,44 +171,41 @@
 											<div class="row col-sm-12"
 												style="max-height: 500px; overflow-y: scroll;">
 												<div class="row">
-													<a id="showMoreButton"
-														href="chat-content?groupChatId=${requestScope.groupChatId}&rows=${requestScope.rows + 5}"
-														class="text-center"><p class="font-monospace">Click
-															to show more</p></a>
+													<a id="showMoreButton" @click="showMore"
+														class="btn-link text-center font-monospace">Click
+															to show more</a>
 												</div>
+												<!-- Vue template code -->
 												<div id="messagesContainer">
-													<c:forEach var="message" items="${messages}">
-														<div
-															class="message ${message.account.id eq sessionScope.account.id ? 'text-end' : 'text-start'} mb-3">
-															<c:if
-																test="${message.account.id eq sessionScope.account.id}">
-																<img class="avatar me-2" width="50px" height="50px"
-																	src="images/${message.account.avatar}" alt="Avatar">
-															</c:if>
+													<div v-for="message in messages"
+														:class="['message', message.account.id === ${sessionScope.account.id} ? 'text-end' : 'text-start', 'mb-3']">
+														<img
+															v-if="message.account.id === ${sessionScope.account.id}"
+															class="avatar me-2" width="50px" height="50px"
+															:src="'images/' + message.account.avatar" alt="Avatar">
 
-															<div class="message-content rounded p-2 d-inline-block">
-																<b class="font-weight-bold">${message.account.fullname}</b>
-																<div class="form-group bg-light rounded-1">
-																	<c:if
-																		test="${message.resourcePathFile != null and message.resourcePathFile != ''}">
-																		<form method="post" action="download-file">
-																			<input type="hidden" name="pathUrl"
-																				value="${requestScope.path}/${message.resourcePathFile}">
-																			<button class="button-as-p">${message.resourcePathFile}</button>
-																		</form>
-																	</c:if>
-																	<p class="mb-0">${message.content}</p>
-																	<small class="text-muted">${message.dateSended}</small>
-																</div>
+														<div class="message-content rounded p-2 d-inline-block">
+															<b class="font-weight-bold">{{
+																message.account.fullname }}</b>
+															<div class="form-group bg-light rounded-1">
+																<button v-if="message.resourcePathFile"
+																	class="button-as-p"
+																	@click="downloadFile(message.resourcePathFile, path)">
+																	{{ message.resourcePathFile }}</button>
+																<p class="mb-0">{{ message.content }}</p>
+																<small class="text-muted">{{
+																	formatedTimestampToDate(message.dateSended) }}</small>
 															</div>
-															<c:if
-																test="${message.account.id ne sessionScope.account.id}">
-																<img class="avatar ms-2" width="50px" height="50px"
-																	src="images/${message.account.avatar}" alt="Avatar">
-															</c:if>
 														</div>
-													</c:forEach>
+
+														<img
+															v-if="message.account.id !== ${sessionScope.account.id}"
+															class="avatar ms-2" width="50px" height="50px"
+															:src="'images/' + message.account.avatar" alt="Avatar">
+													</div>
 												</div>
+
+
 											</div>
 											<div class="row mt-3">
 												<form method="post" action="chat-content"
@@ -231,6 +228,7 @@
 											<h3>View 1 Group!</h3>
 										</c:otherwise>
 									</c:choose>
+									<!-- Create the Vue app -->
 								</div>
 							</div>
 						</div>
@@ -246,6 +244,87 @@
 
 </body>
 
+<c:set var="groupChatId" value="${requestScope.groupChatId}" />
 
 <jsp:include page="components/footer.jsp"></jsp:include>
+<!-- Import Vue.js library -->
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script>
+
+new Vue({
+	  el: '#app',
+	  data: {
+	    messages: [], // Initialize with an empty array to hold messages
+	    groupId: <c:out value="${requestScope.groupChatId}" default="null" />,
+	    rows: <c:out value="${requestScope.rows}" default="null"/>,
+	  },
+	  mounted: function() {
+		    // Fetch messages immediately when the Vue instance is mounted
+		    this.fetchMessages();
+
+		    // Fetch messages every 5 seconds using setInterval
+		    setInterval(this.fetchMessages, 5000);
+	},
+		  
+	  methods: {
+	    fetchMessages: function() {
+	    	 if (this.groupId) {
+                 // Use backticks for URL string to allow variable substitution
+                 axios.get(`get-messages?groupId=`+this.groupId+`&rows=`+this.rows)
+                     .then(response => {
+                         this.messages = response.data;
+                     })
+                     .catch(error => {
+                         console.error(error);
+                     });
+             }
+	    },
+			// Define any methods you need, for example, the downloadFile method
+		    	downloadFile: function(filePath) {
+		    	      // Send an AJAX request to initiate the file download
+		    	      // Replace 'Elearning/download-file' with the appropriate server-side endpoint
+		    	      axios.post('download-file',null,{
+		    	    	 params:{
+		    	    		 pathUrl: filePath,
+		    	    		
+		    	    	 },
+		    	        responseType: 'blob' // Set the response type to 'blob' to handle binary data
+		    	      })
+		    	      .then(response => {
+		    	        // Create a Blob object from the response data
+		    	        const blob = new Blob([response.data], { type: 'application/octet-stream' });
+
+		    	        // Create a URL for the Blob object
+		    	        const url = URL.createObjectURL(blob);
+
+		    	        // Trigger the download using a hidden <a> element
+		    	        const link = document.createElement('a');
+		    	        link.href = url;
+		    	        link.download = filePath.split('/').pop(); // Set the desired file name
+		    	        link.style.display = 'none';
+		    	        document.body.appendChild(link);
+		    	        link.click();
+
+		    	        // Clean up by revoking the Blob URL
+		    	        URL.revokeObjectURL(url);
+		    	      })
+		    	      .catch(error => {
+		    	        console.error(error);
+		    	        // Handle any errors if necessary
+		    	      });
+		    	    }
+		  
+		  ,
+		  formatedTimestampToDate(timeStamp){
+			  var date = new Date(timeStamp);
+			  return date;
+		  },
+		  showMore: function(){
+			  this.rows += 5;
+		  }
+	  },
+	  
+	});
+</script>
 </html>

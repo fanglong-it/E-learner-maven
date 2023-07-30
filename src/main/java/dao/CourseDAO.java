@@ -6,6 +6,9 @@ package dao;
 
 import context.DBContext;
 import model.Course;
+import pagination.CourseFilter;
+import pagination.Pagination;
+
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -120,6 +123,39 @@ public class CourseDAO {
 							.status(rs.getInt("status")).image(rs.getString("image"))
 							.description(rs.getString("description")).createDate(rs.getDate("createDate"))
 							.account(accountDAO.getAccountById(rs.getInt("accountId"))).build());
+				}
+			}
+		} finally {
+			if (rs != null) {
+				rs.close();
+			}
+			if (ps != null) {
+				ps.close();
+			}
+			if (con != null) {
+				con.close();
+			}
+		}
+		return courses;
+	}
+
+	public List<Course> getAllCoursesFilter(Pagination pagination, CourseFilter courseFilter)
+			throws SQLException, Exception {
+		String query = "SELECT c.id , c.courseName , c.status , c.[image] , c.description, c.createDate from Course c \n"
+				+ "where c.courseName like ? \n" + "order by c.id desc \n" + "OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+		ArrayList<Course> courses = new ArrayList<>();
+		try {
+			con = DBContext.makeConnection();
+			if (con != null) {
+				ps = con.prepareStatement(query);
+				ps.setString(1, "%" + courseFilter.getName() + "%");
+				ps.setInt(2, pagination.getOffset());
+				ps.setInt(3, pagination.getPageSize());
+				rs = ps.executeQuery();
+				while (rs.next()) {
+					courses.add(Course.builder().id(rs.getInt("id")).courseName(rs.getString("courseName"))
+							.status(rs.getInt("status")).image(rs.getString("image"))
+							.description(rs.getString("description")).createDate(rs.getDate("createDate")).build());
 				}
 			}
 		} finally {

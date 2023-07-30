@@ -75,6 +75,8 @@ public class ViewTeacherProfileController extends HttpServlet {
 			
 			List<FeedBack> feedBacks = feedBackDAO.getFeedBackByTeacherId(teacherId);
 			request.setAttribute("feedbacks", feedBacks);
+			
+			
 
 		} catch (Exception e) {
 			log("Error at ViewTeacherProfileController: " + e.getMessage());

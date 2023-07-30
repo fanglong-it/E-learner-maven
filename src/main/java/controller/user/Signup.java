@@ -124,10 +124,11 @@ public class Signup extends HttpServlet {
                             + "    <h4>Thank you very much</h4>\n"
                             + "</body>\n"
                             + "</html>";
-                    Account account = accountDAO.saveAccount(new Account(0, email, pass, 0, email, phone, fullname, "", "", new Role(3, Base.ROLE_STUDENT)));
+                    Account account = accountDAO.saveAccount(new Account(0, email, pass, 0, email, phone, fullname, "", "default.jpg", new Role(3, Base.ROLE_STUDENT)));
                     if (account != null) {
                         MailSender.send(subject, message, email);
                         msg = "Please Check your mail Box!";
+                        request.setAttribute("MSG", msg);
                         url = REGIS_PAGE;
                     }
                 } else {

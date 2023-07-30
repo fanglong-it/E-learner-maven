@@ -85,13 +85,6 @@
                                                         <h2 class="text-uppercase">${S.courseName}</h2>
                                                         <img class="img-fluid d-block mx-auto" src="images/${S.image}" alt="..." />
                                                         <p>${S.description}</p>
-
-                                                        <!--                                                        <div class="row mb-3 mt-3 form-group">
-                                                                                                                    <label class="font-weight-bold">Teacher Of This Course</label>
-                                                                                                                    <img class="img-fluid d-block mx-auto" src="images/${S.account.avatar}" alt="..." />
-                                                                                                                    <p>${S.account.username}</p>
-                                                                                                                </div>-->
-
                                                         <div class="row text-center">
                                                             <div class="col-sm-6">
                                                                 <button class="btn btn-danger btn-xl text-uppercase form-control" data-bs-dismiss="modal" type="button">
