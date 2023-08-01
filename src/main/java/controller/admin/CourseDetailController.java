@@ -16,7 +16,7 @@ import java.io.IOException;
 @WebServlet("/admin/course-detail")
 public class CourseDetailController extends HttpServlet {
 
-    private static final String JSP_PAGE = "/admin/course-detail.jsp";
+    private static final String JSP_PAGE = "/manager-course-detail.jsp";
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

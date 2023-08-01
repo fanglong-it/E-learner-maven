@@ -26,13 +26,13 @@
 <meta content="width=device-width, initial-scale=1.0" name="viewport">
 <meta content="" name="keywords">
 <meta content="" name="description">
-<jsp:include page="../components/admin/head.jsp"></jsp:include>
+<jsp:include page="components/admin/head.jsp"></jsp:include>
 </head>
-<%@include file="../components/admin/header.jsp"%>
+<jsp:include page="components/admin/header.jsp"></jsp:include>
 <body>
-	<jsp:include page="../components/admin/navbar.jsp"></jsp:include>
+	<jsp:include page="components/admin/navbar.jsp"></jsp:include>
 	<div class="position-relative bg-white d-flex p-0">
-		<jsp:include page="../components/admin/slidebar.jsp"></jsp:include>
+		<jsp:include page="components/admin/slidebar.jsp"></jsp:include>
 		<!-- Content Start -->
 		<div class="content w-100">
 			<!-- Sale & Revenue Start -->
@@ -256,6 +256,6 @@
 
 		</div>
 	</div>
-	<jsp:include page="../components/admin/footer.jsp"></jsp:include>
+	<jsp:include page="components/admin/footer.jsp"></jsp:include>
 </body>
 </html>

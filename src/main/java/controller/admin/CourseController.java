@@ -68,7 +68,7 @@ public class CourseController extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		String url = "/admin/courses.jsp";
+		String url = "/manager-courses-admin.jsp";
 		try {
 			HttpSession session = request.getSession();
 			Account account = (Account) session.getAttribute("account");
@@ -83,6 +83,7 @@ public class CourseController extends HttpServlet {
 					CourseFilter courseFilter = new CourseFilter(name);
 					courses = courseDAO.getAllCoursesFilter(pagination, courseFilter);
 					request.setAttribute("paging", pagination);
+					session.setAttribute("account", account);
 				}
 				request.setAttribute("courses", courses);
 			} else {

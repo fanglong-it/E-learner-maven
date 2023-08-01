@@ -43,6 +43,10 @@
 												<label for="courseName" style="float: left"
 													class="font-weight-bold">Role</label> <select name="role"
 													class="form-control">
+													<c:if test="${param.role != ''}">
+														<option value="${param.role}" selected="selected">${param.role}</option>													
+													</c:if>
+													<option value="">All</option>
 													<option value="STUDENT">Student</option>
 													<option value="TEACHER">Teacher</option>
 												</select>

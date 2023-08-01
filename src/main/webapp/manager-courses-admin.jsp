@@ -1,15 +1,4 @@
-<%-- 
-    Document   : CilentPage
-    Created on : May 11, 2023, 1:01:06 AM
-    Author     : toden
---%>
 
-
-<%-- 
-    Document   : CilentPage
-    Created on : May 11, 2023, 1:01:06 AM
-    Author     : toden
---%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -21,16 +10,18 @@
 <meta content="width=device-width, initial-scale=1.0" name="viewport">
 <meta content="" name="keywords">
 <meta content="" name="description">
-<jsp:include page="../components/admin/head.jsp"></jsp:include>
+<jsp:include page="components/admin/head.jsp"></jsp:include>
 </head>
-<%@include file="../components/admin/header.jsp"%>
+<jsp:include page="components/admin/header.jsp"></jsp:include>
+
 <body>
-	<jsp:include page="../components/admin/navbar.jsp"></jsp:include>
+	<jsp:include page="components/admin/navbar.jsp"></jsp:include>
 	<div class="position-relative bg-white d-flex">
-		<jsp:include page="../components/admin/slidebar.jsp"></jsp:include>
+		<jsp:include page="components/admin/slidebar.jsp"></jsp:include>
+
 		<!-- Content Start -->
 		<div class="content w-100" style="width: 90%;">
-			<jsp:include page="../components/alert.jsp"></jsp:include>
+			<jsp:include page="components/alert.jsp"></jsp:include>
 			<!-- Sale & Revenue Start -->
 			<div class="container px-3" style="">
 				<div class="row d-flex justify-content-between">
@@ -192,7 +183,7 @@
 
 		</div>
 	</div>
-	<jsp:include page="../components/admin/footer.jsp"></jsp:include>
+	<jsp:include page="components/admin/footer.jsp"></jsp:include>
 </body>
 
 </html>

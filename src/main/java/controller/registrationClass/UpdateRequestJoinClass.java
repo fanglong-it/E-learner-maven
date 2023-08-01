@@ -99,11 +99,11 @@ public class UpdateRequestJoinClass extends HttpServlet {
                         Member member = new Member(0, memberAcc, groupChat, 0);
                         memberDAO.saveMemberChat(member);
                         messageDAO.sendMessage(new Message(0, memberAcc.getEmail() + " Has Join! this conversation ", "", memberAcc, groupChat.getId(), null));
-                        Notification notification = new Notification(0, "You have been approved to class " + registrationClass.getClassId() + " by " + account.getFullname(), memberAcc, new Date(System.currentTimeMillis()));
+                        Notification notification = new Notification(0, "You have been approved to class " + registrationClass.getClass().getName()+ " by " + account.getFullname(), memberAcc, new Date(System.currentTimeMillis()));
                         notificationDAO.saveNotification(notification);
                     }
                 } else if (registrationClass.getRequestStatus().equals("Pending")) {
-                    Notification notification = new Notification(0, "You have been remove from the class " + registrationClass.getClassId() + " by " + account.getFullname(), memberAcc, new Date(System.currentTimeMillis()));
+                    Notification notification = new Notification(0, "You have been remove from the class " + registrationClass.getClass().getName() + " by " + account.getFullname(), memberAcc, new Date(System.currentTimeMillis()));
                     notificationDAO.saveNotification(notification);
                 } else {
                     Notification notification = new Notification(0, "You have have been Reject by " + account.getFullname() + " from the class " + registrationClass.getClassId() + "<br> Reason: " + reason, memberAcc, new Date(System.currentTimeMillis()));

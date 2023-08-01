@@ -47,7 +47,7 @@ public class MessageDAO {
                                     .resourcePathFile(rs.getString("resoucePathFile"))
                                     .account(accountDAO.getAccountById(rs.getInt("userId")))
                                     .groupId(rs.getInt("groupId"))
-                                    .dateSended(rs.getDate("dateSended"))
+                                    .dateSended(rs.getTimestamp("dateSended"))
                                     .build()
                     );
                 }
@@ -80,7 +80,7 @@ public class MessageDAO {
                             .resourcePathFile(rs.getString("resoucePathFile"))
                             .account(accountDAO.getAccountById(rs.getInt("userId")))
                             .groupId(rs.getInt("groupId"))
-                            .dateSended(rs.getDate("dateSended"))
+                            .dateSended(rs.getTimestamp("dateSended"))
                             .build();
                 }
             }

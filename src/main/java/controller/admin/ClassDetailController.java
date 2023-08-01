@@ -21,7 +21,7 @@ import java.util.List;
 @WebServlet("/admin/class-detail")
 public class ClassDetailController extends HttpServlet {
 
-    private static final String JPS_PAGE = "/admin/class-detail.jsp";
+    private static final String JPS_PAGE = "/manager-class-detail.jsp";
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -42,8 +42,7 @@ public class ClassDetailController extends HttpServlet {
             List<Account> teachers = accountDAO.getListAccountsTeacher();
             req.setAttribute("teachers", teachers);
 
-            req.getRequestDispatcher(JPS_PAGE).forward(req, resp);
-            return;
+            req.getRequestDispatcher("/manager-class-detail.jsp").forward(req, resp);
 
         } catch (Exception e) {
             e.printStackTrace();
